@@ -1,0 +1,21 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "blazorserverwebui",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "serviceActions": {
+        "apigateway": "StartDebugging",
+        "blazorserverwebui": "StartDebugging",
+        "customerdb": "StartWithoutDebugging",
+        "customerwebapi": "StartDebugging",
+        "orderdb": "StartWithoutDebugging",
+        "orderwebapi": "StartDebugging",
+        "productdb": "StartWithoutDebugging",
+        "productwebapi": "StartDebugging"
+      }
+    }
+  }
+}
