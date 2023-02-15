@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CustomerWebApi.Models;
+using DataAccess.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductWebApi.Models;
 
@@ -6,51 +8,71 @@ namespace ProductWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : Controller
     {
-        private readonly ProductDbContext _dbContext;
+        private readonly IRepository<Product, int> _productRepository;
 
-        public ProductController(ProductDbContext productDbContext)
+        public ProductController(IRepository<Product, int> productRepository)
         {
-            _dbContext = productDbContext;
+            _productRepository = productRepository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
-            return _dbContext.Products;
+            var products = await _productRepository.GetAll();
+            return Ok(products);
         }
 
         [HttpGet("{productId:int}")]
-        public async Task<ActionResult<Product>> GetById(int productId)
+        public async Task<IActionResult> GetById(int? productId)
         {
-            var product = await _dbContext.Products.FindAsync(productId);
-            return product;
+            if (productId == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productRepository.Get((int)productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
-            await _dbContext.Products.AddAsync(product);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
+            await _productRepository.Add(product);
+            await _productRepository.Save();
+            return Ok(product);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(Product product)
+        public async Task<IActionResult> Update(Product product)
         {
-            _dbContext.Products.Update(product);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
+            await _productRepository.Update(product);
+            await _productRepository.Save();
+            return Ok(product);
         }
 
         [HttpDelete("{productId:int}")]
-        public async Task<ActionResult> Delete(int productId)
+        public async Task<IActionResult> Delete(int? productId)
         {
-            var product = await _dbContext.Products.FindAsync(productId);
-            _dbContext.Products.Remove(product);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
+            if (productId == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _productRepository.Get((int)productId);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            await _productRepository.Remove((int)productId);
+            await _productRepository.Save();
+            return RedirectToAction(nameof(GetProducts));
         }
     }
 }

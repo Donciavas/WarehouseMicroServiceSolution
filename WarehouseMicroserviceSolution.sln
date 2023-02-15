@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{BF2E0098-3F2F-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerWebUI", "BlazorServerWebUI\BlazorServerWebUI.csproj", "{BDDC7CB5-D948-42D3-92AD-CDC8B4DD65BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{F94F4E9C-6970-430A-924D-C85DFAD3A970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{BDDC7CB5-D948-42D3-92AD-CDC8B4DD65BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDDC7CB5-D948-42D3-92AD-CDC8B4DD65BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDDC7CB5-D948-42D3-92AD-CDC8B4DD65BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F94F4E9C-6970-430A-924D-C85DFAD3A970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F94F4E9C-6970-430A-924D-C85DFAD3A970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F94F4E9C-6970-430A-924D-C85DFAD3A970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F94F4E9C-6970-430A-924D-C85DFAD3A970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CustomerWebApi.Models;
+using DataAccess.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using OrderWebApi.Models;
@@ -7,56 +9,68 @@ namespace OrderWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : Controller
     {
-        private readonly IMongoCollection<Order> _orderCollection;
+        private readonly IRepository<Order, string> _orderRepository;
 
-        public OrderController()
+        public OrderController(IRepository<Order, string> orderRepository)
         {
-            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-            var connectionString = $"mongodb://{dbHost}:27017/{dbName}";
-
-            var mongoUrl = MongoUrl.Create(connectionString);
-            var mongoClient = new MongoClient(mongoUrl);
-            var database = mongoClient.GetDatabase(mongoUrl.DatabaseName);
-            _orderCollection = database.GetCollection<Order>("order");
+            _orderRepository = orderRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
-            return await _orderCollection.Find(Builders<Order>.Filter.Empty).ToListAsync();
+            var orders = await _orderRepository.GetAll();
+            return Ok(orders);
         }
 
         [HttpGet("{orderId}")]
-        public async Task<ActionResult<Order>> GetById(string orderId)
+        public async Task<IActionResult> GetById(string? orderId)
         {
-            var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
-            return await _orderCollection.Find(filterDefinition).SingleOrDefaultAsync();
+            if (orderId == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _orderRepository.Get(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Order order)
+        public async Task<IActionResult> Create(Order order)
         {
-            await _orderCollection.InsertOneAsync(order);
-            return Ok();
+            await _orderRepository.Add(order);
+            return Ok(order);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(Order order)
+        public async Task<IActionResult> Update(Order order)
         {
-            var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, order.OrderId);
-            await _orderCollection.ReplaceOneAsync(filterDefinition, order);
-            return Ok();
+            await _orderRepository.Update(order);
+            return Ok(order);
         }
 
         [HttpDelete("{orderId}")]
-        public async Task<ActionResult> Delete(string orderId)
+        public async Task<IActionResult> Delete(string? orderId)
         {
-            var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
-            await _orderCollection.DeleteOneAsync(filterDefinition);
-            return Ok();
+            if (orderId == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _orderRepository.Get(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            await _orderRepository.Remove(orderId);
+            return RedirectToAction(nameof(GetOrders));
         }
     }
 }

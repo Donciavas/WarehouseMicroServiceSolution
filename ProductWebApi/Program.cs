@@ -1,11 +1,14 @@
+using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using ProductWebApi;
+using ProductWebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IRepository<Product, int>, ProductRepository>();
 
 /* Database Context Dependency Injection */
 var dbHost = Environment.GetEnvironmentVariable("DB_HOST");

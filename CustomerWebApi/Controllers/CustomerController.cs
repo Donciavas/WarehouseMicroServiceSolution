@@ -1,56 +1,76 @@
 ﻿using CustomerWebApi.Models;
-using Microsoft.AspNetCore.Http;
+using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class CustomerController : Controller
     {
-        private readonly CustomerDbContext _customerDbContext;
+        private readonly IRepository<Customer, int> _customerRepository;
 
-        public CustomerController(CustomerDbContext customerDbContext)
+        public CustomerController(IRepository<Customer, int> customerRepository)
         {
-            _customerDbContext = customerDbContext;
+            _customerRepository = customerRepository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Customer>> GetCustomers()
+        public async Task<IActionResult> GetCustomers()
         {
-            return _customerDbContext.Customers;
+            var customers = await _customerRepository.GetAll();
+            return Ok(customers);
         }
 
         [HttpGet("{customerId:int}")]
-        public async Task<ActionResult<Customer>> GetById(int customerId)
+        public async Task<IActionResult> GetById(int? customerId)
         {
-            var customer = await _customerDbContext.Customers.FindAsync(customerId);
-            return customer;
+            if (customerId == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _customerRepository.Get((int)customerId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
-            await _customerDbContext.Customers.AddAsync(customer);
-            await _customerDbContext.SaveChangesAsync();
-            return Ok();
+            await _customerRepository.Add(customer);
+            await _customerRepository.Save();
+            return Ok(customer);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(Customer customer)
+        public async Task<IActionResult> Update(Customer customer)
         {
-            _customerDbContext.Customers.Update(customer);
-            await _customerDbContext.SaveChangesAsync();
-            return Ok();
+            await _customerRepository.Update(customer);
+            await _customerRepository.Save();
+            return Ok(customer);
         }
 
         [HttpDelete("{customerId:int}")]
-        public async Task<ActionResult> Delete(int customerId)
+        public async Task<IActionResult> Delete(int? customerId)
         {
-            var customer = await _customerDbContext.Customers.FindAsync(customerId);
-            _customerDbContext.Customers.Remove(customer);
-            await _customerDbContext.SaveChangesAsync();
-            return Ok();
+            if (customerId == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _customerRepository.Get((int)customerId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            await _customerRepository.Remove((int)customerId);
+            await _customerRepository.Save();
+            return RedirectToAction(nameof(GetCustomers));
         }
     }
 }
