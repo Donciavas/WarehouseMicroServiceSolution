@@ -27,7 +27,6 @@ namespace DataAccess.Repositories
         public async Task<Customer> Update(Customer customer)
         {
             _customerDbContext.Customers.Update(customer);
-            await _customerDbContext.SaveChangesAsync();
             return customer;
         }
 

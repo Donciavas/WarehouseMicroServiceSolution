@@ -24,10 +24,6 @@ services:
       dockerfile: CustomerWebApi/Dockerfile
     networks:
       - backend
-    environment:
-      - DB_HOST=customerdb
-      - DB_NAME=dms_customer
-      - DB_SA_PASSWORD=password@12345#
 
   productdb:
     container_name: product-db
@@ -47,10 +43,6 @@ services:
       dockerfile: ProductWebApi/Dockerfile
     networks:
       - backend
-    environment:
-      - DB_HOST=productdb
-      - DB_NAME=dms_product
-      - DB_ROOT_PASSWORD=password@12345#
   
   orderdb:
     container_name: order-db
@@ -68,9 +60,6 @@ services:
       dockerfile: OrderWebApi/Dockerfile
     networks:
       - backend
-    environment:
-      - DB_HOST=orderdb
-      - DB_NAME=dms_order
 
   apigateway:
     container_name: api-gateway

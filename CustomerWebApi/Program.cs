@@ -2,21 +2,15 @@ using CustomerWebApi;
 using CustomerWebApi.Models;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IRepository<Customer, int>, CustomerRepository>();
-
-/* Database Context Dependency Injection */
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
-var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
-builder.Services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(connectionString));
-/* ===================================== */
+builder.Services.AddTransient<IRepository<Customer, int>, CustomerRepository>();
+builder.Services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();
 

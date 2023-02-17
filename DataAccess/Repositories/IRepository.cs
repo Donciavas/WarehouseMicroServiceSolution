@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DataAccess.Repositories
+﻿namespace DataAccess.Repositories
 {
     public interface IRepository<TEntity, T1> where TEntity : class
     {

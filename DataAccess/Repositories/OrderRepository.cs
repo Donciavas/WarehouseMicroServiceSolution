@@ -1,29 +1,26 @@
-﻿using CustomerWebApi;
-using CustomerWebApi.Models;
+﻿using BusinessLogic.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OrderWebApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
     public class OrderRepository : IRepository<Order, string>
     {
+        private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Order> _orderCollection;
 
-        public OrderRepository()
+        public OrderRepository(IOptions<OrderProcessingServiceOptions> options)
         {
-            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-            var connectionString = $"mongodb://{dbHost}:27017/{dbName}";
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
 
-            var mongoUrl = MongoUrl.Create(connectionString);
-            var mongoClient = new MongoClient(mongoUrl);
-            var database = mongoClient.GetDatabase(mongoUrl.DatabaseName);
-            _orderCollection = database.GetCollection<Order>("order");
+            var configuration = options.Value;
+            var client = new MongoClient(configuration.DatabaseConnectionString);
+            _database = client.GetDatabase(configuration.DatabaseName);
+            _orderCollection = _database.GetCollection<Order>(configuration.CollectionName);
         }
 
         public async Task<IEnumerable<Order>> GetAll()

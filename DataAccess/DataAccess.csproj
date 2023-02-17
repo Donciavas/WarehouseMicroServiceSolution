@@ -12,4 +12,8 @@
     <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BusinessLogic\BusinessLogic.csproj" />
+  </ItemGroup>
+
 </Project>
