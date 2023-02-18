@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddTransient<IRepository<Product, int>, ProductRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddDbContext<ProductDbContext>(o => o.UseMySQL(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();

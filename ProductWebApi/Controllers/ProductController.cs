@@ -10,13 +10,13 @@ namespace ProductWebApi.Controllers
     [ApiController]
     public class ProductController : Controller
     {
-        private readonly IRepository<Product, int> _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(IRepository<Product, int> productRepository)
+        public ProductController(IProductRepository productRepository)
         {
+
             _productRepository = productRepository;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
@@ -24,7 +24,7 @@ namespace ProductWebApi.Controllers
             return Ok(products);
         }
 
-        [HttpGet("{productId:int}")]
+        [HttpGet("{ProductId:int}")]
         public async Task<IActionResult> GetById(int? productId)
         {
             if (productId == null)
@@ -38,6 +38,13 @@ namespace ProductWebApi.Controllers
                 return NotFound();
             }
             return Ok(product);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllByPrice()
+        {
+            var products = await _productRepository.GetOrderedByPrice();
+            return Ok(products);
         }
 
         [HttpPost]
@@ -64,8 +71,8 @@ namespace ProductWebApi.Controllers
                 return NotFound();
             }
 
-            var product = await _productRepository.Get((int)productId);
-            if (product == null)
+            var Product = await _productRepository.Get((int)productId);
+            if (Product == null)
             {
                 return NotFound();
             }

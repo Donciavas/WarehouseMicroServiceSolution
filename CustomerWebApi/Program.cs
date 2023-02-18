@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddTransient<IRepository<Customer, int>, CustomerRepository>();
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 builder.Services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();

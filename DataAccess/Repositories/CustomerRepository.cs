@@ -4,44 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class CustomerRepository : IRepository<Customer, int>
+    public class CustomerRepository : Repository<Customer>, ICustomerRepository
     {
         private readonly CustomerDbContext _customerDbContext;
-        public CustomerRepository(CustomerDbContext context)
+        public CustomerRepository(CustomerDbContext context) : base(context)
         {
             _customerDbContext = context;
         }
 
-        public async Task<IEnumerable<Customer>> GetAll()
-        => await _customerDbContext.Customers.OrderBy(a => a.CustomerId).ToListAsync();
-            
-        public async Task<Customer> Get(int customerId)
-        => await _customerDbContext.Customers.FindAsync(customerId);
-
-        public async Task<Customer> Add(Customer customer)
-        {
-            await _customerDbContext.Customers.AddAsync(customer);
-            return customer;
-        }
-
-        public async Task<Customer> Update(Customer customer)
-        {
-            _customerDbContext.Customers.Update(customer);
-            return customer;
-        }
-
-        public async Task Remove(int customerId)
-        {
-            var customer = await _customerDbContext.Customers.FindAsync(customerId);
-            if (customer != null)
-            {
-                _customerDbContext.Remove(customer);
-            }
-        }
-
-        public async Task Save()
-        {
-            await _customerDbContext.SaveChangesAsync();
-        }
+        public async Task<IEnumerable<Customer>> GetOrderedByName()
+      => await _customerDbContext.Customers.OrderBy(n => n.CustomerName).ToListAsync();
     }
 }

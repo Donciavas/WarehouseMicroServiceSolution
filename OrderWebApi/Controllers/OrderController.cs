@@ -1,8 +1,5 @@
-﻿using CustomerWebApi.Models;
-using DataAccess.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using OrderWebApi.Models;
 
 namespace OrderWebApi.Controllers

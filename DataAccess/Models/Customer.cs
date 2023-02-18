@@ -12,12 +12,12 @@ namespace CustomerWebApi.Models
         public int CustomerId { get; set; }
 
         [Column("customer_name")]
-        public string CustomerName { get; set; }
+        public string CustomerName { get; set; } = null!;
 
         [Column("mobile_no")]
-        public string MobileNumber { get; set; }
+        public string MobileNumber { get; set; } = null!;
 
         [Column("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
     }
 }

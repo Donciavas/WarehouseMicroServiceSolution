@@ -2,8 +2,8 @@
 {
     public class OrderProcessingServiceOptions
     {
-        public string DatabaseConnectionString { get; set; }
-        public string DatabaseName { get; set; }
-        public string CollectionName { get; set; }
+        public string DatabaseConnectionString { get; set; } = null!;
+        public string DatabaseName { get; set; } = null!;
+        public string CollectionName { get; set; } = null!;
     }
 }

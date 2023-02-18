@@ -8,13 +8,13 @@ namespace CustomerWebApi.Controllers
     [ApiController]
     public class CustomerController : Controller
     {
-        private readonly IRepository<Customer, int> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerController(IRepository<Customer, int> customerRepository)
+        public CustomerController(ICustomerRepository customerRepository)
         {
+
             _customerRepository = customerRepository;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
@@ -36,6 +36,13 @@ namespace CustomerWebApi.Controllers
                 return NotFound();
             }
             return Ok(customer);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllByName()
+        {
+            var customers = await _customerRepository.GetOrderedByName();
+            return Ok(customers);
         }
 
         [HttpPost]
