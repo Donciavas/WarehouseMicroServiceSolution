@@ -1,6 +1,4 @@
-﻿using CustomerWebApi.Models;
-using DataAccess.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using ProductWebApi.Models;
 
@@ -10,17 +8,17 @@ namespace ProductWebApi.Controllers
     [ApiController]
     public class ProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productService;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductService productService)
         {
 
-            _productRepository = productRepository;
+            _productService = productService;
         }
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _productRepository.GetAll();
+            var products = await _productService.GetAll();
             return Ok(products);
         }
 
@@ -32,7 +30,7 @@ namespace ProductWebApi.Controllers
                 return NotFound();
             }
 
-            var product = await _productRepository.Get((int)productId);
+            var product = await _productService.Get((int)productId);
             if (product == null)
             {
                 return NotFound();
@@ -43,23 +41,23 @@ namespace ProductWebApi.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllByPrice()
         {
-            var products = await _productRepository.GetOrderedByPrice();
+            var products = await _productService.GetOrderedByPrice();
             return Ok(products);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Product product)
         {
-            await _productRepository.Add(product);
-            await _productRepository.Save();
+            await _productService.Add(product);
+            await _productService.Save();
             return Ok(product);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Product product)
         {
-            await _productRepository.Update(product);
-            await _productRepository.Save();
+            await _productService.Update(product);
+            await _productService.Save();
             return Ok(product);
         }
 
@@ -71,14 +69,14 @@ namespace ProductWebApi.Controllers
                 return NotFound();
             }
 
-            var Product = await _productRepository.Get((int)productId);
+            var Product = await _productService.Get((int)productId);
             if (Product == null)
             {
                 return NotFound();
             }
 
-            await _productRepository.Remove((int)productId);
-            await _productRepository.Save();
+            await _productService.Remove((int)productId);
+            await _productService.Save();
             return RedirectToAction(nameof(GetProducts));
         }
     }

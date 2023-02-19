@@ -6,12 +6,21 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{2B947001-C3C6-47D2-BFC9-D68A7D72AAAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerWebApi", "CustomerWebApi\CustomerWebApi.csproj", "{4EAC7ECF-B777-4DCE-BEAF-8BC875188D09}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01E41823-F336-4C53-B823-29B7A454D7E0} = {01E41823-F336-4C53-B823-29B7A454D7E0}
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D00B1C36-22E7-4B17-96C4-99E0EAAFA3ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductWebApi", "ProductWebApi\ProductWebApi.csproj", "{D714DAE8-6A63-4DC0-9184-B942E56EDEAB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01E41823-F336-4C53-B823-29B7A454D7E0} = {01E41823-F336-4C53-B823-29B7A454D7E0}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderWebApi", "OrderWebApi\OrderWebApi.csproj", "{C73F9EA0-BD0D-4B4D-9F34-5BA91F055F75}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01E41823-F336-4C53-B823-29B7A454D7E0} = {01E41823-F336-4C53-B823-29B7A454D7E0}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{EE2C0224-8662-49A2-9F66-ED47B9BFBB2D}"
 EndProject

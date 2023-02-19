@@ -10,7 +10,7 @@ namespace DataAccess.Repositories
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Order> _orderCollection;
 
-        public OrderRepository(IOptions<OrderProcessingServiceOptions> options)
+        public OrderRepository(IOptions<OrderProcessingOptions> options)
         {
             if (options == null)
             {

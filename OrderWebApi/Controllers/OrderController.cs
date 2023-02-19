@@ -1,4 +1,4 @@
-﻿using DataAccess.Repositories;
+﻿using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using OrderWebApi.Models;
 
@@ -8,17 +8,17 @@ namespace OrderWebApi.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-        private readonly IRepository<Order, string> _orderRepository;
+        private readonly IService<Order, string> _orderService;
 
-        public OrderController(IRepository<Order, string> orderRepository)
+        public OrderController(IService<Order, string> orderService)
         {
-            _orderRepository = orderRepository;
+            _orderService = orderService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
-            var orders = await _orderRepository.GetAll();
+            var orders = await _orderService.GetAll();
             return Ok(orders);
         }
 
@@ -30,7 +30,7 @@ namespace OrderWebApi.Controllers
                 return NotFound();
             }
 
-            var order = await _orderRepository.Get(orderId);
+            var order = await _orderService.Get(orderId);
             if (order == null)
             {
                 return NotFound();
@@ -41,14 +41,14 @@ namespace OrderWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Order order)
         {
-            await _orderRepository.Add(order);
+            await _orderService.Add(order);
             return Ok(order);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
-            await _orderRepository.Update(order);
+            await _orderService.Update(order);
             return Ok(order);
         }
 
@@ -60,13 +60,13 @@ namespace OrderWebApi.Controllers
                 return NotFound();
             }
 
-            var order = await _orderRepository.Get(orderId);
+            var order = await _orderService.Get(orderId);
             if (order == null)
             {
                 return NotFound();
             }
 
-            await _orderRepository.Remove(orderId);
+            await _orderService.Remove(orderId);
             return RedirectToAction(nameof(GetOrders));
         }
     }

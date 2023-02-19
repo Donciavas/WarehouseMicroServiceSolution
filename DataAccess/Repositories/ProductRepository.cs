@@ -13,6 +13,6 @@ namespace DataAccess.Repositories
         }
 
         public async Task<IEnumerable<Product>> GetOrderedByPrice()
-      => await _productDbContext.Products.OrderBy(n => n.ProductPrice).ToListAsync();
+      => await _productDbContext.Products!.OrderBy(n => n.ProductPrice).ToListAsync();
     }
 }

@@ -7,6 +7,8 @@ namespace CustomerWebApi
 {
     public class CustomerDbContext : DbContext
     {
+        public DbSet<Customer>? Customers { get; set; }
+
         public CustomerDbContext(DbContextOptions<CustomerDbContext> dbContextOptions) : base(dbContextOptions)
         {
             try
@@ -23,7 +25,5 @@ namespace CustomerWebApi
                 Console.WriteLine(ex.Message);
             }
         }
-
-        public DbSet<Customer> Customers { get; set; }
     }
 }

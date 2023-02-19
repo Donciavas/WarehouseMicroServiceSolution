@@ -7,7 +7,7 @@ namespace ProductWebApi
 {
     public class ProductDbContext : DbContext
     {
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product>? Products { get; set; }
 
         public ProductDbContext(DbContextOptions<ProductDbContext> dbContextOptions) : base(dbContextOptions)
         {

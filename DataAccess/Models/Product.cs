@@ -11,10 +11,10 @@ namespace ProductWebApi.Models
         public int ProductId { get; set; }
 
         [Column("product_name")]
-        public string ProductName { get; set; } = null!;
+        public string? ProductName { get; set; }
 
         [Column("product_code")]
-        public string ProductCode { get; set; } = null!;
+        public string? ProductCode { get; set; }
 
         [Column("product_price")]
         public decimal ProductPrice { get; set; }

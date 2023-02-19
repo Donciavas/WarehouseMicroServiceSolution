@@ -1,5 +1,5 @@
-﻿using CustomerWebApi.Models;
-using DataAccess.Repositories;
+﻿using BusinessLogic.Services;
+using CustomerWebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerWebApi.Controllers
@@ -8,17 +8,17 @@ namespace CustomerWebApi.Controllers
     [ApiController]
     public class CustomerController : Controller
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerService _customerService;
 
-        public CustomerController(ICustomerRepository customerRepository)
+        public CustomerController(ICustomerService customerService)
         {
 
-            _customerRepository = customerRepository;
+            _customerService = customerService;
         }
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
-            var customers = await _customerRepository.GetAll();
+            var customers = await _customerService.GetAll();
             return Ok(customers);
         }
 
@@ -30,7 +30,7 @@ namespace CustomerWebApi.Controllers
                 return NotFound();
             }
 
-            var customer = await _customerRepository.Get((int)customerId);
+            var customer = await _customerService.Get((int)customerId);
             if (customer == null)
             {
                 return NotFound();
@@ -41,23 +41,23 @@ namespace CustomerWebApi.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> GetAllByName()
         {
-            var customers = await _customerRepository.GetOrderedByName();
+            var customers = await _customerService.GetOrderedByName();
             return Ok(customers);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Customer customer)
         {
-            await _customerRepository.Add(customer);
-            await _customerRepository.Save();
+            await _customerService.Add(customer);
+            await _customerService.Save();
             return Ok(customer);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Customer customer)
         {
-            await _customerRepository.Update(customer);
-            await _customerRepository.Save();
+            await _customerService.Update(customer);
+            await _customerService.Save();
             return Ok(customer);
         }
 
@@ -69,14 +69,14 @@ namespace CustomerWebApi.Controllers
                 return NotFound();
             }
 
-            var customer = await _customerRepository.Get((int)customerId);
+            var customer = await _customerService.Get((int)customerId);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            await _customerRepository.Remove((int)customerId);
-            await _customerRepository.Save();
+            await _customerService.Remove((int)customerId);
+            await _customerService.Save();
             return RedirectToAction(nameof(GetCustomers));
         }
     }

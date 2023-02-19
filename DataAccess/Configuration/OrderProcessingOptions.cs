@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Configuration
 {
-    public class OrderProcessingServiceOptions
+    public class OrderProcessingOptions
     {
         public string DatabaseConnectionString { get; set; } = null!;
         public string DatabaseName { get; set; } = null!;
