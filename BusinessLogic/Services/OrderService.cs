@@ -1,9 +1,10 @@
-﻿using DataAccess.Repositories;
-using OrderWebApi.Models;
+﻿using BusinessLogic.DTOs;
+using DataAccess.Models;
+using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
-    public class OrderService : IService<Order, string>
+    public class OrderService : IOrderService
     {
         protected readonly IRepository<Order, string> _orderRepository;
 
@@ -13,7 +14,7 @@ namespace BusinessLogic.Services
         }
 
         public async Task<IEnumerable<Order>> GetAll()
-       => await _orderRepository.GetAll();
+        => await _orderRepository.GetAll();
 
         public async Task<Order> Get(string id)
         => await _orderRepository.Get(id);
@@ -42,6 +43,12 @@ namespace BusinessLogic.Services
         public async Task Save()
         {
             await _orderRepository.Save();
+        }
+
+        public async Task<Order> AddDto(OrderDto order)
+        {
+            await _orderRepository.Add(order);
+            return order;
         }
     }
 }

@@ -5,7 +5,7 @@
 {
     <tr>
         <td>@(customer != null ? customer.CustomerName : string.Empty)</td>
-        <td>@Order.OrderedOn.ToString("dd-MM-yyyy hh:mm tt")</td>
+        <td>@Order!.OrderedOn.ToString("dd-MM-yyyy hh:mm tt")</td>
         <td>
             @if (!showProducts)
             {
@@ -23,7 +23,7 @@
     {
         <tr>
             <td colspan="5">
-                @foreach (var orderDetail in Order.OrderDetails)
+                @foreach (var orderDetail in Order.OrderDetails!)
                 {
                     <OrderDetailRecord ProductId="orderDetail.ProductId" Quantity="orderDetail.Quantity" />
                 }
@@ -38,11 +38,11 @@ else
 
 @code {
     private bool isEditMode = false;
-    private CustomerViewModel customer;
+    private CustomerViewModel? customer;
     private bool showProducts = false;
 
     [Parameter]
-    public OrderViewModel Order { get; set; }
+    public OrderViewModel? Order { get; set; }
 
     [Parameter]
     public EventCallback<string> DeleteOrder { get; set; }
@@ -52,7 +52,7 @@ else
 
     private async Task FetchCustomerById()
     {
-        customer = await httpClient.GetFromJsonAsync<CustomerViewModel>($"api/Customer/{Order.CustomerId}");
+        customer = await httpClient.GetFromJsonAsync<CustomerViewModel>($"api/Customer/{Order!.CustomerId}");
     }
 
     protected override async Task OnInitializedAsync()

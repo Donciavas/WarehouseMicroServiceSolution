@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using ProductWebApi.Models;
 
-namespace ProductWebApi
+namespace DataAccess
 {
     public class ProductDbContext : DbContext
     {

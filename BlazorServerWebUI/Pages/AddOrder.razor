@@ -5,7 +5,7 @@
 {
     <tr>
         <td>
-            <select @bind="NewOrder.CustomerId" class="form-control">
+            <select @bind="NewOrder!.CustomerId" class="form-control">
                 <option selected="selected" value="0">- Customer -</option>
                 @foreach (var customer in customerList)
                 {
@@ -51,7 +51,7 @@
 
 @code {
     [Parameter]
-    public OrderViewModel NewOrder { get; set; }
+    public OrderViewModel? NewOrder { get; set; }
 
     [Parameter]
     public EventCallback FetchOrderList { get; set; }
@@ -62,8 +62,8 @@
     [Parameter]
     public EventCallback PostSaveEvent { get; set; }
 
-    private List<CustomerViewModel> customerList;
-    private List<ProductViewModel> productList;
+    private List<CustomerViewModel>? customerList;
+    private List<ProductViewModel>? productList;
     private int currentProductId;
     private int currentQuantity;
 
@@ -77,9 +77,9 @@
 
     private async Task AddProduct()
     {
-        if (NewOrder.OrderDetails == null) NewOrder.OrderDetails = new List<OrderDetailViewModel>();
+        if (NewOrder!.OrderDetails == null) NewOrder.OrderDetails = new List<OrderDetailViewModel>();
         var product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{currentProductId}");
-        NewOrder.OrderDetails.Add(new OrderDetailViewModel { ProductId = currentProductId, Quantity = currentQuantity, UnitPrice = product.ProductPrice });
+        NewOrder.OrderDetails.Add(new OrderDetailViewModel { ProductId = currentProductId, Quantity = currentQuantity, UnitPrice = product!.ProductPrice });
 
         currentProductId = 0;
         currentQuantity = 0;
@@ -89,12 +89,11 @@
     {
         if (!IsEditMode)
         {
-            NewOrder.OrderedOn = DateTime.UtcNow;
-            NewOrder.OrderId = string.Empty;
+            NewOrder!.OrderId = string.Empty;
             await httpClient.PostAsJsonAsync<OrderViewModel>("api/Order", NewOrder);
         }
         else
-            await httpClient.PutAsJsonAsync<OrderViewModel>("api/Order", NewOrder);
+            await httpClient.PutAsJsonAsync<OrderViewModel>("api/Order", NewOrder!);
 
         if (!IsEditMode) NewOrder = new OrderViewModel();
         await PostSaveEvent.InvokeAsync();

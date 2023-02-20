@@ -1,4 +1,4 @@
-﻿using CustomerWebApi.Models;
+﻿using DataAccess.Models;
 
 namespace BusinessLogic.Services
 {

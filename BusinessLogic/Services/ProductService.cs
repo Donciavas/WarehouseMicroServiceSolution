@@ -1,5 +1,5 @@
-﻿using DataAccess.Repositories;
-using ProductWebApi.Models;
+﻿using DataAccess.Models;
+using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {

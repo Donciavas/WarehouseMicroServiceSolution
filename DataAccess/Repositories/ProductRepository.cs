@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProductWebApi;
-using ProductWebApi.Models;
+﻿using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {

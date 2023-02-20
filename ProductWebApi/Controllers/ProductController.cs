@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Services;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
-using ProductWebApi.Models;
 
 namespace ProductWebApi.Controllers
 {

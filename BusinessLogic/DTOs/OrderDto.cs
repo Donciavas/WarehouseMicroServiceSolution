@@ -1,10 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using DataAccess.Models;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
-namespace DataAccess.Models
+namespace BusinessLogic.DTOs
 {
-    [Serializable, BsonIgnoreExtraElements]
-    public class Order
+    public class OrderDto
     {
         [BsonId, BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
         public string? OrderId { get; set; }
@@ -17,5 +17,15 @@ namespace DataAccess.Models
 
         [BsonElement("order_details")]
         public List<OrderDetail>? OrderDetails { get; set; }
+
+        public static implicit operator Order(OrderDto order)
+        {
+            return new Order
+            {
+                CustomerId = order.CustomerId,
+                OrderedOn = DateTime.UtcNow,
+                OrderDetails = order.OrderDetails
+            };
+        }
     }
 }

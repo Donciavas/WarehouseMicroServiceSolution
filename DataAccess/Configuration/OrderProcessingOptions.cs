@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Configuration
+﻿namespace DataAccess.Configuration
 {
     public class OrderProcessingOptions
     {

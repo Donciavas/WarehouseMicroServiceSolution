@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace OrderWebApi.Models
+namespace DataAccess.Models
 {
     [Serializable, BsonIgnoreExtraElements]
     public class OrderDetail

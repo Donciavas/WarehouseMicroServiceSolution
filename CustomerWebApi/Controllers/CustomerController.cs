@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Services;
-using CustomerWebApi.Models;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerWebApi.Controllers

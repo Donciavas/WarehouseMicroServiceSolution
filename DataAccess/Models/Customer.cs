@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CustomerWebApi.Models
+namespace DataAccess.Models
 {
     [Table("customer", Schema = "dbo")]
     public class Customer

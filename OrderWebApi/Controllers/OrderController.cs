@@ -1,6 +1,7 @@
-﻿using BusinessLogic.Services;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Services;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
-using OrderWebApi.Models;
 
 namespace OrderWebApi.Controllers
 {
@@ -8,9 +9,9 @@ namespace OrderWebApi.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-        private readonly IService<Order, string> _orderService;
+        private readonly IOrderService _orderService;
 
-        public OrderController(IService<Order, string> orderService)
+        public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
         }
@@ -39,17 +40,17 @@ namespace OrderWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order order)
+        public async Task<IActionResult> Create(OrderDto orderDto)
         {
-            await _orderService.Add(order);
-            return Ok(order);
+            await _orderService.AddDto(orderDto);
+            return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
             await _orderService.Update(order);
-            return Ok(order);
+            return Ok();
         }
 
         [HttpDelete("{orderId}")]

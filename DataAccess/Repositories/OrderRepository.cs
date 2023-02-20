@@ -1,7 +1,7 @@
-﻿using BusinessLogic.Configuration;
+﻿using DataAccess.Configuration;
+using DataAccess.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using OrderWebApi.Models;
 
 namespace DataAccess.Repositories
 {

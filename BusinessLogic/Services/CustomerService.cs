@@ -1,5 +1,4 @@
-﻿using CustomerWebApi;
-using CustomerWebApi.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services

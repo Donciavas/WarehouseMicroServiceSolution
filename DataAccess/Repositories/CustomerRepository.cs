@@ -1,5 +1,4 @@
-﻿using CustomerWebApi;
-using CustomerWebApi.Models;
+﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories

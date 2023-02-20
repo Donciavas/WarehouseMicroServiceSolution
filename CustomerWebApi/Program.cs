@@ -1,9 +1,7 @@
 using BusinessLogic.Services;
-using CustomerWebApi;
-using CustomerWebApi.Models;
+using DataAccess;
 using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
