@@ -7,7 +7,7 @@
         <td>
             <select @bind="NewOrder!.CustomerId" class="form-control">
                 <option selected="selected" value="0">- Customer -</option>
-                @foreach(var customer in customerList)
+                @foreach (var customer in customerList)
                 {
                     <option value="@customer.CustomerId">@customer.CustomerName</option>
                 }
@@ -18,7 +18,7 @@
                 <div class="col-6">
                     <select @bind="currentProductId" class="form-control">
                         <option selected="selected" value="0">- Product -</option>
-                        @foreach(var product in productList)
+                        @foreach (var product in productList)
                         {
                             <option value="@product.ProductId">@product.ProductName (@product.ProductCode)</option>
                         }
@@ -40,7 +40,7 @@
     <tr>
         <td colspan="5">
             <div class="row m-0">
-                @foreach(var orderDetail in NewOrder.OrderDetails)
+                @foreach (var orderDetail in NewOrder.OrderDetails)
                 {
                     <OrderDetailRecord ProductId="orderDetail.ProductId" Quantity="orderDetail.Quantity" />
                 }

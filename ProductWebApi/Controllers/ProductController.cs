@@ -23,15 +23,9 @@ namespace ProductWebApi.Controllers
         [HttpGet("{ProductId:int}")]
         public async Task<IActionResult> GetById(int? productId)
         {
-            if (productId == null)
-            {
-                return NotFound();
-            }
+            if (productId is null || productId <= 0) return BadRequest();
             var product = await _productService.Get((int)productId);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            if (product is null) return NotFound();
             return Ok(product);
         }
         [HttpGet("[action]")]
@@ -43,28 +37,25 @@ namespace ProductWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductDto productDto)
         {
-            await _productService.Add(productDto);
-            return Ok(productDto);
+            if (productDto is null) return BadRequest();
+            var result = await _productService.Add(productDto);
+            if (result is null) return UnprocessableEntity();
+            return StatusCode(201, result);
         }
         [HttpPut]
         public async Task<IActionResult> Update(Product product)
         {
-            await _productService.Update(product);
-            return Ok(product);
+            if (product is null) return BadRequest();
+            var result = await _productService.Update(product);
+            if (!result) return NotFound();
+            return Ok(result);
         }
         [HttpDelete("{productId:int}")]
         public async Task<IActionResult> Delete(int? productId)
         {
-            if (productId == null)
-            {
-                return NotFound();
-            }
-            var Product = await _productService.Get((int)productId);
-            if (Product == null)
-            {
-                return NotFound();
-            }
-            await _productService.Remove((int)productId);
+            if (productId is null || productId <= 0) return BadRequest();
+            var result = await _productService.Remove((int)productId);
+            if (!result) return NotFound();
             return RedirectToAction(nameof(GetProducts));
         }
     }

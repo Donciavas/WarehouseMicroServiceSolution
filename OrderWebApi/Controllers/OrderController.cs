@@ -23,42 +23,33 @@ namespace OrderWebApi.Controllers
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetById(string? orderId)
         {
-            if (orderId == null)
-            {
-                return NotFound();
-            }
+            if (orderId is null) return BadRequest();
             var order = await _orderService.Get(orderId);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            if (order is null) return NotFound();
             return Ok(order);
         }
         [HttpPost]
         public async Task<IActionResult> Create(OrderDto orderDto)
         {
-            await _orderService.Add(orderDto);
-            return Ok();
+            if (orderDto is null) return BadRequest();
+            var result = await _orderService.Add(orderDto);
+            if (result is null) return UnprocessableEntity();
+            return StatusCode(201, result);
         }
         [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
-            await _orderService.Update(order);
-            return Ok();
+            if (order is null) return BadRequest();
+            var result = await _orderService.Update(order);
+            if (!result) return NotFound();
+            return Ok(result);
         }
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> Delete(string? orderId)
         {
-            if (orderId == null)
-            {
-                return NotFound();
-            }
-            var order = await _orderService.Get(orderId);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            await _orderService.Remove(orderId);
+            if (orderId is null) return BadRequest();
+            var result = await _orderService.Remove(orderId);
+            if (!result) return NotFound();
             return RedirectToAction(nameof(GetOrders));
         }
     }

@@ -23,15 +23,9 @@ namespace CustomerWebApi.Controllers
         [HttpGet("{customerId:int}")]
         public async Task<IActionResult> GetById(int? customerId)
         {
-            if (customerId == null)
-            {
-                return NotFound();
-            }
+            if (customerId is null || customerId <= 0) return BadRequest();
             var customer = await _customerService.Get((int)customerId);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+            if (customer is null) return NotFound();
             return Ok(customer);
         }
         [HttpGet("[action]")]
@@ -43,28 +37,25 @@ namespace CustomerWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CustomerDto customerDto)
         {
-            await _customerService.Add(customerDto);
-            return Ok(customerDto);
+            if (customerDto is null) return BadRequest();
+            var result = await _customerService.Add(customerDto);
+            if (result is null) return UnprocessableEntity();
+            return StatusCode(201, result);
         }
         [HttpPut]
         public async Task<IActionResult> Update(Customer customer)
         {
-            await _customerService.Update(customer);
-            return Ok(customer);
+            if (customer is null) return BadRequest();
+            var result = await _customerService.Update(customer);
+            if (!result) return NotFound();
+            return Ok(result);
         }
         [HttpDelete("{customerId:int}")]
         public async Task<IActionResult> Delete(int? customerId)
         {
-            if (customerId == null)
-            {
-                return NotFound();
-            }
-            var customer = await _customerService.Get((int)customerId);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            await _customerService.Remove((int)customerId);
+            if (customerId is null || customerId <= 0) return BadRequest();
+            var result = await _customerService.Remove((int)customerId);
+            if (!result) return NotFound();
             return RedirectToAction(nameof(GetCustomers));
         }
     }

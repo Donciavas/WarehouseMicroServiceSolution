@@ -1,5 +1,6 @@
 ﻿using DataAccess.Configuration;
 using DataAccess.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -9,9 +10,10 @@ namespace DataAccess.Repositories
     {
         private readonly IMongoDatabase _database;
         private readonly IMongoCollection<Order> _orderCollection;
-        public OrderRepository(IOptions<OrderProcessingOptions> options)
+        private readonly ILogger<OrderRepository> _logger;
+        public OrderRepository(IOptions<OrderProcessingOptions> options, ILogger<OrderRepository> logger)
         {
-            if (options == null)
+            if (options is null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
@@ -19,6 +21,7 @@ namespace DataAccess.Repositories
             var client = new MongoClient(configuration.DatabaseConnectionString);
             _database = client.GetDatabase(configuration.DatabaseName);
             _orderCollection = _database.GetCollection<Order>(configuration.CollectionName);
+            _logger = logger;
         }
         public async Task<IEnumerable<Order>> GetAll()
          => await _orderCollection.Find(Builders<Order>.Filter.Empty).ToListAsync();
@@ -29,19 +32,51 @@ namespace DataAccess.Repositories
         }
         public async Task<Order> Add(Order order)
         {
-            await _orderCollection.InsertOneAsync(order);
+            try
+            {
+                await _orderCollection.InsertOneAsync(order);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex.Message, ex);
+            }
             return order;
         }
-        public async Task<Order> Update(Order order)
+        public async Task<bool> Update(Order order)
         {
-            var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, order.OrderId);
-            await _orderCollection.ReplaceOneAsync(filterDefinition, order);
-            return order;
+            try
+            {
+                var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, order.OrderId);
+                if (filterDefinition is not null)
+                {
+                    await _orderCollection.ReplaceOneAsync(filterDefinition, order);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return false;
+            }
         }
-        public async Task Remove(string orderId)
+        public async Task<bool> Remove(string orderId)
         {
-            var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
-            await _orderCollection.DeleteOneAsync(filterDefinition);
+            try
+            {
+                var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
+                if (filterDefinition is not null)
+                {
+                    await _orderCollection.DeleteOneAsync(filterDefinition);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return false;
+            }
         }
     }
 }

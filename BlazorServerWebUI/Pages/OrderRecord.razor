@@ -23,7 +23,7 @@
     {
         <tr>
             <td colspan="5">
-                @foreach(var orderDetail in Order.OrderDetails!)
+                @foreach (var orderDetail in Order.OrderDetails!)
                 {
                     <OrderDetailRecord ProductId="orderDetail.ProductId" Quantity="orderDetail.Quantity" />
                 }

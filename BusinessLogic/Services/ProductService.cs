@@ -10,7 +10,7 @@ namespace BusinessLogic.Services
         {
             _productRepository = productRepository;
         }
-       public async Task<IEnumerable<Product>> GetOrderedByPrice()
-      => await _productRepository.GetOrderedByPrice();
+        public async Task<IEnumerable<Product>> GetOrderedByPrice() =>
+            await _productRepository.GetOrderedByPrice();
     }
 }
