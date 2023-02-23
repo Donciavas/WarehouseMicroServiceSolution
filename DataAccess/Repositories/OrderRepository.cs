@@ -43,6 +43,5 @@ namespace DataAccess.Repositories
             var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
             await _orderCollection.DeleteOneAsync(filterDefinition);
         }
-        public async Task Save() { }
     }
 }

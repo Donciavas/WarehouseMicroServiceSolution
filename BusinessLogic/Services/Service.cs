@@ -23,7 +23,5 @@ namespace BusinessLogic.Services
         }
        public async Task Remove(int id)
             => await _repository.Remove(id);
-       public async Task Save()
-            => await _repository.Save();
     }
 }

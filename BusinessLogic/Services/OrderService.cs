@@ -1,5 +1,4 @@
-﻿using BusinessLogic.DTOs;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
@@ -32,15 +31,6 @@ namespace BusinessLogic.Services
             {
                 await _orderRepository.Remove(id);
             }
-        }
-       public async Task Save()
-        {
-            await _orderRepository.Save();
-        }
-       public async Task<Order> AddDto(OrderDto order)
-        {
-            await _orderRepository.Add(order);
-            return order;
         }
     }
 }

@@ -3,8 +3,5 @@ using DataAccess.Models;
 
 namespace BusinessLogic.Services
 {
-    public interface IOrderService : IService<Order, string>
-    {
-        Task<Order> AddDto(OrderDto orderDto);
-    }
+    public interface IOrderService : IService<Order, string> { }
 }

@@ -7,6 +7,5 @@
        Task<TEntity> Add(TEntity entity);
        Task<TEntity> Update(TEntity entity);
        Task Remove(T1 id);
-       Task Save();
     }
 }
