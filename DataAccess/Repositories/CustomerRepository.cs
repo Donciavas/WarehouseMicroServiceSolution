@@ -10,8 +10,7 @@ namespace DataAccess.Repositories
         {
             _customerDbContext = context;
         }
-
-        public async Task<IEnumerable<Customer>> GetOrderedByName()
+       public async Task<IEnumerable<Customer>> GetOrderedByName()
       => await _customerDbContext.Customers!.OrderBy(n => n.CustomerName).ToListAsync();
     }
 }

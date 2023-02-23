@@ -24,13 +24,10 @@ else
 
 @code {
     private bool isEditMode = false;
-
-    [Parameter]
+   [Parameter]
     public ProductViewModel Product { get; set; }
-
-    [Parameter]
+   [Parameter]
     public EventCallback<ProductViewModel> UpdateProduct { get; set; }
-
-    [Parameter]
+   [Parameter]
     public EventCallback<int> DeleteProduct { get; set; }
 }

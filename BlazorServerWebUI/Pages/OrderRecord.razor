@@ -23,7 +23,7 @@
     {
         <tr>
             <td colspan="5">
-                @foreach (var orderDetail in Order.OrderDetails!)
+                @foreach(var orderDetail in Order.OrderDetails!)
                 {
                     <OrderDetailRecord ProductId="orderDetail.ProductId" Quantity="orderDetail.Quantity" />
                 }
@@ -40,22 +40,17 @@ else
     private bool isEditMode = false;
     private CustomerViewModel? customer;
     private bool showProducts = false;
-
-    [Parameter]
+   [Parameter]
     public OrderViewModel? Order { get; set; }
-
-    [Parameter]
+   [Parameter]
     public EventCallback<string> DeleteOrder { get; set; }
-
-    [Parameter]
+   [Parameter]
     public EventCallback FetchOrderList { get; set; }
-
-    private async Task FetchCustomerById()
+   private async Task FetchCustomerById()
     {
         customer = await httpClient.GetFromJsonAsync<CustomerViewModel>($"api/Customer/{Order!.CustomerId}");
     }
-
-    protected override async Task OnInitializedAsync()
+   protected override async Task OnInitializedAsync()
     {
         await FetchCustomerById();
         await base.OnInitializedAsync();

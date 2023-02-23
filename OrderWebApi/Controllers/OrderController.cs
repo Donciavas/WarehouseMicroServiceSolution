@@ -10,64 +10,55 @@ namespace OrderWebApi.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
-
-        public OrderController(IOrderService orderService)
+       public OrderController(IOrderService orderService)
         {
             _orderService = orderService;
         }
-
-        [HttpGet]
+       [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
             var orders = await _orderService.GetAll();
             return Ok(orders);
         }
-
-        [HttpGet("{orderId}")]
+       [HttpGet("{orderId}")]
         public async Task<IActionResult> GetById(string? orderId)
         {
             if (orderId == null)
             {
                 return NotFound();
             }
-
-            var order = await _orderService.Get(orderId);
+           var order = await _orderService.Get(orderId);
             if (order == null)
             {
                 return NotFound();
             }
             return Ok(order);
         }
-
-        [HttpPost]
+       [HttpPost]
         public async Task<IActionResult> Create(OrderDto orderDto)
         {
             await _orderService.AddDto(orderDto);
             return Ok();
         }
-
-        [HttpPut]
+       [HttpPut]
         public async Task<IActionResult> Update(Order order)
         {
             await _orderService.Update(order);
             return Ok();
         }
-
-        [HttpDelete("{orderId}")]
+       [HttpDelete("{orderId}")]
         public async Task<IActionResult> Delete(string? orderId)
         {
             if (orderId == null)
             {
                 return NotFound();
             }
-
-            var order = await _orderService.Get(orderId);
+           var order = await _orderService.Get(orderId);
             if (order == null)
             {
                 return NotFound();
             }
-
-            await _orderService.Remove(orderId);
+           await _orderService.Remove(orderId);
             return RedirectToAction(nameof(GetOrders));
         }
     }

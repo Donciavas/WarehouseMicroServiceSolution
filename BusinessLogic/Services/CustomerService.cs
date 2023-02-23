@@ -10,8 +10,7 @@ namespace BusinessLogic.Services
         {
             _customerRepository = customerRepository;
         }
-
-        public async Task<IEnumerable<Customer>> GetOrderedByName()
+       public async Task<IEnumerable<Customer>> GetOrderedByName()
       => await _customerRepository.GetOrderedByName();
     }
 }

@@ -10,14 +10,11 @@ namespace DataAccess.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("customer_id")]
         public int CustomerId { get; set; }
-
-        [Column("customer_name")]
+       [Column("customer_name")]
         public string? CustomerName { get; set; }
-
-        [Column("mobile_no")]
+       [Column("mobile_no")]
         public string? MobileNumber { get; set; }
-
-        [Column("email")]
+       [Column("email")]
         public string? Email { get; set; }
     }
 }

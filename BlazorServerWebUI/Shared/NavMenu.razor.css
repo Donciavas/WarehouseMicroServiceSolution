@@ -22,16 +22,13 @@
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
 }
-
-    .nav-item:first-of-type {
+   .nav-item:first-of-type {
         padding-top: 1rem;
     }
-
-    .nav-item:last-of-type {
+   .nav-item:last-of-type {
         padding-bottom: 1rem;
     }
-
-    .nav-item ::deep a {
+   .nav-item ::deep a {
         color: #d7d7d7;
         border-radius: 4px;
         height: 3rem;
@@ -54,8 +51,7 @@
     .navbar-toggler {
         display: none;
     }
-
-    .collapse {
+   .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }

@@ -25,8 +25,7 @@
       ],
       "DownstreamPathTemplate": "/api/Customer/{customerId}"
     },
-
-    //Product Web API
+   //Product Web API
     {
       "UpstreamPathTemplate": "/api/Product",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
@@ -51,8 +50,7 @@
       ],
       "DownstreamPathTemplate": "/api/Product/{productId}"
     },
-
-    // Order Web API
+   // Order Web API
     {
       "UpstreamPathTemplate": "/api/Order",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
