@@ -15,7 +15,7 @@
     public int ProductId { get; set; }
    [Parameter]
     public decimal Quantity { get; set; }
-   private ProductViewModel product;
+   private ProductViewModel? product;
    protected override async Task OnInitializedAsync()
     {
         product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{ProductId}");
