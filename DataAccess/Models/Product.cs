@@ -15,6 +15,6 @@ namespace DataAccess.Models
         [Column("product_code")]
         public string? ProductCode { get; set; }
         [Column("product_price")]
-        public decimal ProductPrice { get; set; }
+        public double ProductPrice { get; set; }
     }
 }

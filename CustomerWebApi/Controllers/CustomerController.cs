@@ -38,6 +38,9 @@ namespace CustomerWebApi.Controllers
         public async Task<IActionResult> Create(CustomerDto customerDto)
         {
             if (customerDto is null) return BadRequest();
+            var searchEmailInUse = _customerService.EmailCheck(customerDto.Email!);
+            if (searchEmailInUse) return BadRequest("This email is in use. Try to use different email instead. ");
+            _customerService.GreetingEmail(customerDto.Email!);
             var result = await _customerService.Add(customerDto);
             if (result is null) return UnprocessableEntity();
             return StatusCode(201, result);

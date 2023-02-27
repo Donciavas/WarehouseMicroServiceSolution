@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
  <ItemGroup>
+   <PackageReference Include="MailKit" Version="3.5.0" />
+   <PackageReference Include="MimeKit" Version="3.5.0" />
+ </ItemGroup>
+ <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 

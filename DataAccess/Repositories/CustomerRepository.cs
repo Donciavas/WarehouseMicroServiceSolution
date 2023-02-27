@@ -12,5 +12,7 @@ namespace DataAccess.Repositories
         }
         public async Task<IEnumerable<Customer>> GetOrderedByName() =>
             await _customerDbContext.Customers!.OrderBy(n => n.CustomerName).ToListAsync();
+        public bool EmailCheck(string checkEmail) =>
+            _customerDbContext.Customers!.Any(u => u.Email == checkEmail);
     }
 }
