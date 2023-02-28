@@ -15,11 +15,12 @@ namespace BusinessLogic.DTOs
         [Column("customer_id")]
         public int CustomerId { get; set; }
         [Required]
-        [MinInputLength(2)]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for Customer Name! ")]
         [CheckForWhiteSpaces]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Customer name. Use letters only please")]
         [Column("customer_name")]
         public string? CustomerName { get; set; }
-        [Phone(ErrorMessage = "Phone number only digits.")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Write Mobile number in digits only. ")]
         [CheckForWhiteSpaces]
         [Column("mobile_no")]
         public string? MobileNumber { get; set; }

@@ -13,6 +13,7 @@ namespace BusinessLogic.DTOs
         public string? OrderId { get; set; }
         [Required]
         [CheckForWhiteSpaces]
+        [NotLessThanNumber(1)]
         [BsonElement("customer_id"), BsonRepresentation(BsonType.Int32)]
         public int CustomerId { get; set; }
         [BsonElement("ordered_on"), BsonRepresentation(BsonType.DateTime)]

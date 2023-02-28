@@ -12,13 +12,15 @@ namespace BusinessLogic.DTOs
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("product_id")]
         public int ProductId { get; set; }
-        [MinInputLength(2)]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for Product Name! ")]
         [Required]
         [CheckForWhiteSpaces]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Name. Use numbers and letters only please")]
         [Column("product_name")]
         public string? ProductName { get; set; }
         [Required]
         [CheckForWhiteSpaces]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Code. Use numbers and letters only please")]
         [Column("product_code")]
         public string? ProductCode { get; set; }
         [Required]
