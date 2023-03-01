@@ -4,7 +4,7 @@ using PersonRegistrationASPNet.BusinessLogic.Attributes;
 
 namespace BusinessLogic.DTOs
 {
-    public class CustomerDto
+    public class CustomerPutDto
     {
         public int CustomerId { get; set; }
         [Required]
@@ -18,13 +18,14 @@ namespace BusinessLogic.DTOs
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov|email)$", ErrorMessage = "Invalid email address pattern.")]
         public string? Email { get; set; }
 
-        public static implicit operator Customer(CustomerDto customerDto)
+        public static implicit operator Customer(CustomerPutDto customerPutDto)
         {
             return new Customer
             {
-                CustomerName = customerDto.CustomerName,
-                MobileNumber = customerDto.MobileNumber,
-                Email = customerDto.Email
+                CustomerId = customerPutDto.CustomerId,
+                CustomerName = customerPutDto.CustomerName,
+                MobileNumber = customerPutDto.MobileNumber,
+                Email = customerPutDto.Email
             };
         }
     }

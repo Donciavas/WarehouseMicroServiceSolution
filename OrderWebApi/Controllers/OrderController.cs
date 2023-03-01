@@ -37,10 +37,10 @@ namespace OrderWebApi.Controllers
             return StatusCode(201, result);
         }
         [HttpPut]
-        public async Task<IActionResult> Update(Order order)
+        public async Task<IActionResult> Update(OrderPutDto orderPutDto)
         {
-            if (order is null) return BadRequest();
-            var result = await _orderService.Update(order);
+            if (orderPutDto is null) return BadRequest();
+            var result = await _orderService.Update(orderPutDto);
             if (!result) return NotFound();
             return Ok(result);
         }

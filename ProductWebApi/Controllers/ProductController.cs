@@ -21,10 +21,10 @@ namespace ProductWebApi.Controllers
             return Ok(products);
         }
         [HttpGet("{ProductId:int}")]
-        public async Task<IActionResult> GetById(int? productId)
+        public async Task<IActionResult> GetById(int productId)
         {
-            if (productId is null || productId <= 0) return BadRequest();
-            var product = await _productService.Get((int)productId);
+            if (productId is 0 || productId <= 0) return BadRequest();
+            var product = await _productService.Get(productId);
             if (product is null) return NotFound();
             return Ok(product);
         }
@@ -43,10 +43,10 @@ namespace ProductWebApi.Controllers
             return StatusCode(201, result);
         }
         [HttpPut]
-        public async Task<IActionResult> Update(Product product)
+        public async Task<IActionResult> Update(ProductPutDto productPutDto)
         {
-            if (product is null) return BadRequest();
-            var result = await _productService.Update(product);
+            if (productPutDto is null || productPutDto.ProductId is 0) return BadRequest();
+            var result = await _productService.Update(productPutDto);
             if (!result) return NotFound();
             return Ok(result);
         }

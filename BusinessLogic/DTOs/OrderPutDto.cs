@@ -4,7 +4,7 @@ using PersonRegistrationASPNet.BusinessLogic.Attributes;
 
 namespace BusinessLogic.DTOs
 {
-    public class OrderDto
+    public class OrderPutDto
     {
         public string? OrderId { get; set; }
         [Required]
@@ -14,13 +14,14 @@ namespace BusinessLogic.DTOs
         public DateTime OrderedOn { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
 
-        public static implicit operator Order(OrderDto orderDto)
+        public static implicit operator Order(OrderPutDto orderPutDto)
         {
             return new Order
             {
-                CustomerId = orderDto.CustomerId,
+                OrderId = orderPutDto.OrderId,
+                CustomerId = orderPutDto.CustomerId,
                 OrderedOn = DateTime.UtcNow,
-                OrderDetails = orderDto.OrderDetails
+                OrderDetails = orderPutDto.OrderDetails
             };
         }
     }

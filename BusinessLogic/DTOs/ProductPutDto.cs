@@ -4,7 +4,7 @@ using PersonRegistrationASPNet.BusinessLogic.Attributes;
 
 namespace BusinessLogic.DTOs
 {
-    public class ProductDto
+    public class ProductPutDto
     {
         public int ProductId { get; set; }
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for Product Name! ")]
@@ -21,13 +21,14 @@ namespace BusinessLogic.DTOs
         [NotLessThanNumber(1)]
         public double ProductPrice { get; set; }
 
-        public static implicit operator Product(ProductDto productDto)
+        public static implicit operator Product(ProductPutDto productPutDto)
         {
             return new Product
             {
-                ProductName = productDto.ProductName,
-                ProductCode = productDto.ProductCode,
-                ProductPrice = productDto.ProductPrice
+                ProductId = productPutDto.ProductId,
+                ProductName = productPutDto.ProductName,
+                ProductCode = productPutDto.ProductCode,
+                ProductPrice = productPutDto.ProductPrice
             };
         }
     }

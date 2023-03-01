@@ -21,10 +21,10 @@ namespace CustomerWebApi.Controllers
             return Ok(customers);
         }
         [HttpGet("{customerId:int}")]
-        public async Task<IActionResult> GetById(int? customerId)
+        public async Task<IActionResult> GetByIdCustomer(int customerId)
         {
-            if (customerId is null || customerId <= 0) return BadRequest();
-            var customer = await _customerService.Get((int)customerId);
+            if (customerId is 0 || customerId <= 0) return BadRequest();
+            var customer = await _customerService.Get(customerId);
             if (customer is null) return NotFound();
             return Ok(customer);
         }
@@ -35,7 +35,7 @@ namespace CustomerWebApi.Controllers
             return Ok(customers);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CustomerDto customerDto)
+        public async Task<IActionResult> CreateCustomer(CustomerDto customerDto)
         {
             if (customerDto is null) return BadRequest();
             var searchEmailInUse = _customerService.EmailCheck(customerDto.Email!);
@@ -46,15 +46,15 @@ namespace CustomerWebApi.Controllers
             return StatusCode(201, result);
         }
         [HttpPut]
-        public async Task<IActionResult> Update(Customer customer)
+        public async Task<IActionResult> UpdateCustomer(CustomerPutDto customerPutDto)
         {
-            if (customer is null) return BadRequest();
-            var result = await _customerService.Update(customer);
+            if (customerPutDto is null || customerPutDto.CustomerId is 0) return BadRequest();
+            var result = await _customerService.Update(customerPutDto);
             if (!result) return NotFound();
             return Ok(result);
         }
         [HttpDelete("{customerId:int}")]
-        public async Task<IActionResult> Delete(int? customerId)
+        public async Task<IActionResult> DeleteCustomer(int? customerId)
         {
             if (customerId is null || customerId <= 0) return BadRequest();
             var result = await _customerService.Remove((int)customerId);
