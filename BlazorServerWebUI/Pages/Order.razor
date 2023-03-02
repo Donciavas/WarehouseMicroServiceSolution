@@ -18,10 +18,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <AddOrder NewOrder="newOrder" FetchOrderList="FetchOrderList" IsEditMode="false"  PostSaveEvent="() => { newOrder = new OrderViewModel(); }" />
-                   @if (orderList != null && orderList.Count != 0)
+                    <AddOrder NewOrder="newOrder" FetchOrderList="FetchOrderList" IsEditMode="false" PostSaveEvent="() => { newOrder = new OrderViewModel(); }" />
+                    @if (orderList != null && orderList.Count != 0)
                     {
-                        foreach(var order in orderList)
+                        foreach (var order in orderList)
                         {
                             <OrderRecord Order="order" DeleteOrder="DeleteOrder" FetchOrderList="FetchOrderList" />
                         }
@@ -34,16 +34,16 @@
 @code {
     private OrderViewModel newOrder = new OrderViewModel();
     private List<OrderViewModel>? orderList;
-   protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await FetchOrderList();
         await base.OnInitializedAsync();
     }
-   private async Task FetchOrderList()
+    private async Task FetchOrderList()
     {
         orderList = await httpClient.GetFromJsonAsync<List<OrderViewModel>>("api/Order");
     }
-   private async Task DeleteOrder(string orderId)
+    private async Task DeleteOrder(string orderId)
     {
         await httpClient.DeleteAsync($"api/Order/{orderId}");
         await FetchOrderList();

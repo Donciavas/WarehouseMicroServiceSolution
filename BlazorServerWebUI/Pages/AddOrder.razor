@@ -52,31 +52,31 @@
 @code {
     [Parameter]
     public OrderViewModel? NewOrder { get; set; }
-   [Parameter]
+    [Parameter]
     public EventCallback FetchOrderList { get; set; }
-   [Parameter]
+    [Parameter]
     public bool IsEditMode { get; set; }
-   [Parameter]
+    [Parameter]
     public EventCallback PostSaveEvent { get; set; }
-   private List<CustomerViewModel>? customerList;
+    private List<CustomerViewModel>? customerList;
     private List<ProductViewModel>? productList;
     private int currentProductId;
     private int currentQuantity;
-   protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         customerList = await httpClient.GetFromJsonAsync<List<CustomerViewModel>>("/api/Customer");
         productList = await httpClient.GetFromJsonAsync<List<ProductViewModel>>("api/Product");
-       await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
-   private async Task AddProduct()
+    private async Task AddProduct()
     {
         if (NewOrder!.OrderDetails == null) NewOrder.OrderDetails = new List<OrderDetailViewModel>();
         var product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{currentProductId}");
         NewOrder.OrderDetails.Add(new OrderDetailViewModel { ProductId = currentProductId, Quantity = currentQuantity, UnitPrice = product!.ProductPrice });
-       currentProductId = 0;
+        currentProductId = 0;
         currentQuantity = 0;
     }
-   private async Task SaveOrder()
+    private async Task SaveOrder()
     {
         if (!IsEditMode)
         {
@@ -85,7 +85,7 @@
         }
         else
             await httpClient.PutAsJsonAsync<OrderViewModel>("api/Order", NewOrder!);
-       if (!IsEditMode) NewOrder = new OrderViewModel();
+        if (!IsEditMode) NewOrder = new OrderViewModel();
         await PostSaveEvent.InvokeAsync();
         await FetchOrderList.InvokeAsync();
     }

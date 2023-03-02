@@ -9,7 +9,7 @@ namespace BlazorServerWebUI.Models
         public DateTime OrderedOn { get; set; }
         public List<OrderDetailViewModel>? OrderDetails { get; set; }
     }
-   public class OrderDetailViewModel
+    public class OrderDetailViewModel
     {
         public int ProductId { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Quantity. Please enter valid integer Number! ")]

@@ -13,10 +13,10 @@
 @code {
     [Parameter]
     public int ProductId { get; set; }
-   [Parameter]
+    [Parameter]
     public int Quantity { get; set; }
-   private ProductViewModel? product;
-   protected override async Task OnInitializedAsync()
+    private ProductViewModel? product;
+    protected override async Task OnInitializedAsync()
     {
         product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{ProductId}");
         await base.OnInitializedAsync();

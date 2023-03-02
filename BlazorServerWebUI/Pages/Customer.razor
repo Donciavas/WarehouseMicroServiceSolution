@@ -29,10 +29,9 @@
                     {
                         foreach (var customer in customers)
                         {
-                            <CustomerRecord 
-                                Customer="customer"
-                                UpdateCustomer="UpdateCustomer"
-                                DeleteCustomer="DeleteCustomer"></CustomerRecord>
+                            <CustomerRecord Customer="customer"
+                                    UpdateCustomer="UpdateCustomer"
+                                    DeleteCustomer="DeleteCustomer"></CustomerRecord>
                         }
                     }
                     else
@@ -50,29 +49,29 @@
 @code {
     private List<CustomerViewModel>? customers;
     private CustomerViewModel newCustomer = new CustomerViewModel();
-   protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await FetchCustomerList();
     }
-   private async Task FetchCustomerList()
+    private async Task FetchCustomerList()
     {
         customers = await httpClient.GetFromJsonAsync<List<CustomerViewModel>>("/api/Customer");
     }
-   private async Task SaveCustomer()
+    private async Task SaveCustomer()
     {
         await httpClient.PostAsJsonAsync<CustomerViewModel>("/api/Customer", newCustomer);
         await FetchCustomerList();
         newCustomer = new CustomerViewModel();
     }
-   private async Task UpdateCustomer(CustomerViewModel cutomer)
+    private async Task UpdateCustomer(CustomerViewModel cutomer)
     {
         await httpClient.PutAsJsonAsync<CustomerViewModel>("/api/Customer", cutomer);
         await FetchCustomerList();
     }
-   private async Task DeleteCustomer(int customerId)
+    private async Task DeleteCustomer(int customerId)
     {
-       var result = await httpClient.DeleteAsync($"/api/Customer/{customerId}");
+        var result = await httpClient.DeleteAsync($"/api/Customer/{customerId}");
         await FetchCustomerList();
     }
 }

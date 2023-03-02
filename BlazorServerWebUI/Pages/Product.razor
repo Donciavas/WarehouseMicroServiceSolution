@@ -29,10 +29,9 @@
                     {
                         foreach (var product in products)
                         {
-                            <ProductRecord 
-                                Product="product"
-                                UpdateProduct="UpdateProduct"
-                                DeleteProduct="DeleteProduct"></ProductRecord>
+                            <ProductRecord Product="product"
+                                   UpdateProduct="UpdateProduct"
+                                   DeleteProduct="DeleteProduct"></ProductRecord>
                         }
                     }
                     else
@@ -50,29 +49,29 @@
 @code {
     private List<ProductViewModel>? products;
     private ProductViewModel newProduct = new ProductViewModel();
-   protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await FetchProductList();
     }
-   private async Task FetchProductList()
+    private async Task FetchProductList()
     {
         products = await httpClient.GetFromJsonAsync<List<ProductViewModel>>("/api/Product");
     }
-   private async Task SaveProduct()
+    private async Task SaveProduct()
     {
         await httpClient.PostAsJsonAsync<ProductViewModel>("/api/Product", newProduct);
         await FetchProductList();
         newProduct = new ProductViewModel();
     }
-   private async Task UpdateProduct(ProductViewModel cutomer)
+    private async Task UpdateProduct(ProductViewModel cutomer)
     {
         await httpClient.PutAsJsonAsync<ProductViewModel>("/api/Product", cutomer);
         await FetchProductList();
     }
-   private async Task DeleteProduct(int productId)
+    private async Task DeleteProduct(int productId)
     {
-       var result = await httpClient.DeleteAsync($"/api/Product/{productId}");
+        var result = await httpClient.DeleteAsync($"/api/Product/{productId}");
         await FetchProductList();
     }
 }
