@@ -29,7 +29,7 @@ namespace CustomerWebApi.Controllers
             return Ok(customer);
         }
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllByName()
+        public async Task<IActionResult> GetAllByNameCustomers()
         {
             var customers = await _customerService.GetOrderedByName();
             return Ok(customers);
@@ -54,10 +54,10 @@ namespace CustomerWebApi.Controllers
             return Ok(result);
         }
         [HttpDelete("{customerId:int}")]
-        public async Task<IActionResult> DeleteCustomer(int? customerId)
+        public async Task<IActionResult> DeleteCustomer(int customerId)
         {
-            if (customerId is null || customerId <= 0) return BadRequest();
-            var result = await _customerService.Remove((int)customerId);
+            if (customerId is 0 || customerId <= 0) return BadRequest();
+            var result = await _customerService.Remove(customerId);
             if (!result) return NotFound();
             return RedirectToAction(nameof(GetCustomers));
         }

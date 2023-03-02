@@ -21,7 +21,7 @@ namespace OrderWebApi.Controllers
             return Ok(orders);
         }
         [HttpGet("{orderId}")]
-        public async Task<IActionResult> GetById(string? orderId)
+        public async Task<IActionResult> GetByIdOrder(string orderId)
         {
             if (orderId is null) return BadRequest();
             var order = await _orderService.Get(orderId);
@@ -29,7 +29,7 @@ namespace OrderWebApi.Controllers
             return Ok(order);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(OrderDto orderDto)
+        public async Task<IActionResult> CreateOrder(OrderDto orderDto)
         {
             if (orderDto is null) return BadRequest();
             var result = await _orderService.Add(orderDto);
@@ -37,7 +37,7 @@ namespace OrderWebApi.Controllers
             return StatusCode(201, result);
         }
         [HttpPut]
-        public async Task<IActionResult> Update(OrderPutDto orderPutDto)
+        public async Task<IActionResult> UpdateOrder(OrderPutDto orderPutDto)
         {
             if (orderPutDto is null) return BadRequest();
             var result = await _orderService.Update(orderPutDto);
@@ -45,7 +45,7 @@ namespace OrderWebApi.Controllers
             return Ok(result);
         }
         [HttpDelete("{orderId}")]
-        public async Task<IActionResult> Delete(string? orderId)
+        public async Task<IActionResult> DeleteOrder(string orderId)
         {
             if (orderId is null) return BadRequest();
             var result = await _orderService.Remove(orderId);
