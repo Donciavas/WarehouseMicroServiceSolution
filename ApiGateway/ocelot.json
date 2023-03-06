@@ -1,5 +1,18 @@
 {
   "Routes": [
+    // Authentication Web API
+    {
+      "UpstreamPathTemplate": "/api/Account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationwebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Account"
+    },
     // Customer Web API
     {
       "UpstreamPathTemplate": "/api/Customer",
@@ -25,7 +38,7 @@
       ],
       "DownstreamPathTemplate": "/api/Customer/{customerId}"
     },
-   //Product Web API
+    //Product Web API
     {
       "UpstreamPathTemplate": "/api/Product",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
@@ -50,7 +63,7 @@
       ],
       "DownstreamPathTemplate": "/api/Product/{productId}"
     },
-   // Order Web API
+    // Order Web API
     {
       "UpstreamPathTemplate": "/api/Order",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
