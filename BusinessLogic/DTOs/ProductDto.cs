@@ -10,11 +10,11 @@ namespace BusinessLogic.DTOs
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for Product Name! ")]
         [Required]
         [CheckForWhiteSpaces]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Name. Use numbers and letters only please")]
+        [RegularExpression(@"^[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Name. Use numbers and letters only please")]
         public string? ProductName { get; set; }
         [Required]
         [CheckForWhiteSpaces]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Code. Use numbers and letters only please")]
+        [RegularExpression(@"^[a-zA-Z0-9""'\s-]*$", ErrorMessage = "Product Code. Use numbers and letters only please")]
         public string? ProductCode { get; set; }
         [Required]
         [CheckForWhiteSpaces]

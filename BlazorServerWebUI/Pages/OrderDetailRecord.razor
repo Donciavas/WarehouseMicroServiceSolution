@@ -1,5 +1,11 @@
-﻿@inject HttpClient httpClient
+﻿@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
 @using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 @if (product != null)
 {
@@ -18,7 +24,15 @@
     private ProductViewModel? product;
     protected override async Task OnInitializedAsync()
     {
-        product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{ProductId}");
-        await base.OnInitializedAsync();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{ProductId}");
+            await base.OnInitializedAsync();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
 }

@@ -1,5 +1,11 @@
-﻿@inject HttpClient httpClient
+﻿@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
 @using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 @if (!isEditMode)
 {
@@ -52,7 +58,15 @@ else
     }
     protected override async Task OnInitializedAsync()
     {
-        await FetchCustomerById();
-        await base.OnInitializedAsync();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            await FetchCustomerById();
+            await base.OnInitializedAsync();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
 }

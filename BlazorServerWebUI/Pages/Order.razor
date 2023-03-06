@@ -1,6 +1,12 @@
 ﻿@page "/order"
-@inject HttpClient httpClient
+@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
 @using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 <h3>Order</h3>
 
@@ -36,8 +42,16 @@
     private List<OrderViewModel>? orderList;
     protected override async Task OnInitializedAsync()
     {
-        await FetchOrderList();
-        await base.OnInitializedAsync();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            await FetchOrderList();
+            await base.OnInitializedAsync();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
     private async Task FetchOrderList()
     {
@@ -45,6 +59,9 @@
     }
     private async Task DeleteOrder(string orderId)
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         await httpClient.DeleteAsync($"api/Order/{orderId}");
         await FetchOrderList();
     }

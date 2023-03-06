@@ -1,6 +1,13 @@
-﻿@using BlazorServerWebUI.Models
+﻿@page "/product"
+@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
+@using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
 @inject HttpClient httpClient
-@page "/product"
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
+
 
 <h3>Product</h3>
 
@@ -51,8 +58,16 @@
     private ProductViewModel newProduct = new ProductViewModel();
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        await FetchProductList();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            await base.OnInitializedAsync();
+            await FetchProductList();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
     private async Task FetchProductList()
     {
@@ -60,17 +75,26 @@
     }
     private async Task SaveProduct()
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         await httpClient.PostAsJsonAsync<ProductViewModel>("/api/Product", newProduct);
         await FetchProductList();
         newProduct = new ProductViewModel();
     }
     private async Task UpdateProduct(ProductViewModel cutomer)
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         await httpClient.PutAsJsonAsync<ProductViewModel>("/api/Product", cutomer);
         await FetchProductList();
     }
     private async Task DeleteProduct(int productId)
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         var result = await httpClient.DeleteAsync($"/api/Product/{productId}");
         await FetchProductList();
     }

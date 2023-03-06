@@ -1,5 +1,12 @@
 ﻿@inject HttpClient httpClient
+@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
 @using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 @if (customerList != null && customerList.Count != 0 && productList != null && productList.Count != 0)
 {
@@ -64,12 +71,23 @@
     private int currentQuantity;
     protected override async Task OnInitializedAsync()
     {
-        customerList = await httpClient.GetFromJsonAsync<List<CustomerViewModel>>("/api/Customer");
-        productList = await httpClient.GetFromJsonAsync<List<ProductViewModel>>("api/Product");
-        await base.OnInitializedAsync();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            customerList = await httpClient.GetFromJsonAsync<List<CustomerViewModel>>("/api/Customer");
+            productList = await httpClient.GetFromJsonAsync<List<ProductViewModel>>("api/Product");
+            await base.OnInitializedAsync();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
     private async Task AddProduct()
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         if (NewOrder!.OrderDetails == null) NewOrder.OrderDetails = new List<OrderDetailViewModel>();
         var product = await httpClient.GetFromJsonAsync<ProductViewModel>($"api/Product/{currentProductId}");
         NewOrder.OrderDetails.Add(new OrderDetailViewModel { ProductId = currentProductId, Quantity = currentQuantity, UnitPrice = product!.ProductPrice });
@@ -78,6 +96,9 @@
     }
     private async Task SaveOrder()
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         if (!IsEditMode)
         {
             NewOrder!.OrderId = string.Empty;

@@ -1,5 +1,31 @@
 {
   "Routes": [
+    // Authentication Web API
+    {
+      "UpstreamPathTemplate": "/api/Account/Login",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationwebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Account/Login"
+    },
+    // Authentication Web API for Back-End testing
+    {
+      "UpstreamPathTemplate": "/api/Account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationwebapi",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Account"
+    },
     // Customer Web API
     {
       "UpstreamPathTemplate": "/api/Customer",
@@ -11,7 +37,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Customer"
+      "DownstreamPathTemplate": "/api/Customer",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Customer/{customerId}",
@@ -23,9 +56,16 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Customer/{customerId}"
+      "DownstreamPathTemplate": "/api/Customer/{customerId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
-   //Product Web API
+    //Product Web API
     {
       "UpstreamPathTemplate": "/api/Product",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
@@ -36,7 +76,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Product"
+      "DownstreamPathTemplate": "/api/Product",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Product/{productId}",
@@ -48,9 +95,16 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Product/{productId}"
+      "DownstreamPathTemplate": "/api/Product/{productId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
-   // Order Web API
+    // Order Web API
     {
       "UpstreamPathTemplate": "/api/Order",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
@@ -61,7 +115,21 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Order"
+      "DownstreamPathTemplate": "/api/Order",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "60s",
+        "PeriodTimespan": 60,
+        "Limit": 3
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Order/{orderId}",
@@ -73,10 +141,21 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Order/{orderId}"
+      "DownstreamPathTemplate": "/api/Order/{orderId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001"
+    "BaseUrl": "http://localhost:8001",
+    "RateLimitOptions": {
+      "QuotaExceededMessage": "Request have exceeded maximum of 3 successful attempts per 60s time limit. Not allowed",
+      "HttpStatusCode": 909
+    }
   }
 }

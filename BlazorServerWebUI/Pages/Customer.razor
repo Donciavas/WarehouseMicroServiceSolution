@@ -1,6 +1,12 @@
 ﻿@page "/customer"
+@using BlazorServerWebUI.Authentication
+@using BlazorServerWebUI.Shared
 @using BlazorServerWebUI.Models
+@using System.Net.Http.Headers
 @inject HttpClient httpClient
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navManager
+@attribute [Authorize(Roles = "Administrator")]
 
 <h3>Customer</h3>
 
@@ -51,8 +57,16 @@
     private CustomerViewModel newCustomer = new CustomerViewModel();
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        await FetchCustomerList();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            await base.OnInitializedAsync();
+            await FetchCustomerList();
+        }
+        else
+            navManager.NavigateTo("/login");
     }
     private async Task FetchCustomerList()
     {
@@ -60,17 +74,26 @@
     }
     private async Task SaveCustomer()
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         await httpClient.PostAsJsonAsync<CustomerViewModel>("/api/Customer", newCustomer);
         await FetchCustomerList();
         newCustomer = new CustomerViewModel();
     }
     private async Task UpdateCustomer(CustomerViewModel cutomer)
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         await httpClient.PutAsJsonAsync<CustomerViewModel>("/api/Customer", cutomer);
         await FetchCustomerList();
     }
     private async Task DeleteCustomer(int customerId)
     {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+        var token = await customAuthStateProvider.GetToken();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         var result = await httpClient.DeleteAsync($"/api/Customer/{customerId}");
         await FetchCustomerList();
     }
