@@ -24,7 +24,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Customer"
+      "DownstreamPathTemplate": "/api/Customer",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Customer/{customerId}",
@@ -36,7 +43,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Customer/{customerId}"
+      "DownstreamPathTemplate": "/api/Customer/{customerId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     //Product Web API
     {
@@ -49,7 +63,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Product"
+      "DownstreamPathTemplate": "/api/Product",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Product/{productId}",
@@ -61,7 +82,14 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Product/{productId}"
+      "DownstreamPathTemplate": "/api/Product/{productId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     },
     // Order Web API
     {
@@ -74,7 +102,21 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Order"
+      "DownstreamPathTemplate": "/api/Order",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "60s",
+        "PeriodTimespan": 60,
+        "Limit": 3
+      }
     },
     {
       "UpstreamPathTemplate": "/api/Order/{orderId}",
@@ -86,10 +128,21 @@
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/Order/{orderId}"
+      "DownstreamPathTemplate": "/api/Order/{orderId}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "Role": "Administrator"
+      }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001"
+    "BaseUrl": "http://localhost:8001",
+    "RateLimitOptions": {
+      "QuotaExceededMessage": "Request have exceeded maximum of 3 successful attempts per 60s time limit. Not allowed",
+      "HttpStatusCode": 909
+    }
   }
 }
