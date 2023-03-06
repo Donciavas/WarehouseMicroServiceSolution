@@ -8,7 +8,6 @@ namespace JwtAuthenticationManager
 {
     public class JwtTokenHandler
     {
-<<<<<<< HEAD
         public const string JWT_SECURITY_KEY = "pRdCqn8cSWLtaJwbRg8jGzpQRyEA1gdXkt7GoPd4";
         private const int JWT_TOKEN_VALIDITY_MINS = 20;
         private UserAccountService _userAccountService;
@@ -62,32 +61,11 @@ namespace JwtAuthenticationManager
 
         //For Back-End Testing
         public AuthenticationResponse? GenerateJwtTokenTest(AuthenticationRequest authenticationRequest)
-=======
-        public const string JWT_SECURITY_KEY = "yPkCqn4kSWLtaJwXvN2jGzpQRyTZ3gdXkt7FeBJP";
-        private const int JWT_TOKEN_VALIDITY_MINS = 20;
-        private readonly List<UserAccount> _userAccountList;
-
-        public JwtTokenHandler()
-        {
-            _userAccountList = new List<UserAccount>
-            {
-                new UserAccount{ UserName = "admin", Password = "admin", Role = "Administrator" },
-                new UserAccount{ UserName = "user", Password = "user", Role = "User" },
-            };
-        }
-
-        public AuthenticationResponse? GenerateJwtToken(AuthenticationRequest authenticationRequest)
->>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
         {
             if (string.IsNullOrWhiteSpace(authenticationRequest.UserName) || string.IsNullOrWhiteSpace(authenticationRequest.Password))
                 return null;
 
-<<<<<<< HEAD
             var userAccount = _userAccountService.GetUserAccountTest(authenticationRequest);
-=======
-            /* Validation */
-            var userAccount = _userAccountList.Where(x => x.UserName == authenticationRequest.UserName && x.Password == authenticationRequest.Password).FirstOrDefault();
->>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
             if (userAccount == null) return null;
 
             var tokenExpiryTimeStamp = DateTime.Now.AddMinutes(JWT_TOKEN_VALIDITY_MINS);

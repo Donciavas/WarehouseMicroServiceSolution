@@ -1,9 +1,6 @@
 ﻿using JwtAuthenticationManager;
 using JwtAuthenticationManager.Models;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
-=======
->>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationWebApi.Controllers
@@ -13,7 +10,6 @@ namespace AuthenticationWebApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JwtTokenHandler _jwtTokenHandler;
-<<<<<<< HEAD
         private UserAccountService _userAccountService;
 
         public AccountController(JwtTokenHandler jwtTokenHandler, UserAccountService userAccountService)
@@ -39,18 +35,6 @@ namespace AuthenticationWebApi.Controllers
         public ActionResult<AuthenticationResponse?> AuthenticateForTesting([FromBody] AuthenticationRequest authenticationRequest)
         {
             var authenticationResponse = _jwtTokenHandler.GenerateJwtTokenTest(authenticationRequest);
-=======
-
-        public AccountController(JwtTokenHandler jwtTokenHandler)
-        {
-            _jwtTokenHandler = jwtTokenHandler;
-        }
-
-        [HttpPost]
-        public ActionResult<AuthenticationResponse?> Authenticate([FromBody] AuthenticationRequest authenticationRequest)
-        {
-            var authenticationResponse = _jwtTokenHandler.GenerateJwtToken(authenticationRequest);
->>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
             if (authenticationResponse == null) return Unauthorized();
             return authenticationResponse;
         }
