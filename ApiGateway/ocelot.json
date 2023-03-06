@@ -2,6 +2,7 @@
   "Routes": [
     // Authentication Web API
     {
+<<<<<<< HEAD
       "UpstreamPathTemplate": "/api/Account/Login",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamScheme": "http",
@@ -15,6 +16,8 @@
     },
     // Authentication Web API for Back-End testing
     {
+=======
+>>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
       "UpstreamPathTemplate": "/api/Account",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamScheme": "http",

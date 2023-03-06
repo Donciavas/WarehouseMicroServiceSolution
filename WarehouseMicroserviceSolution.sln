@@ -34,9 +34,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{01E41823-F336-4C53-B823-29B7A454D7E0}"
 EndProject
+<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtAuthenticationManager", "JwtAuthenticationManager\JwtAuthenticationManager.csproj", "{A5CC8A9E-D7E6-46AF-AB30-A5128F41E99E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationWebApi", "AuthenticationWebApi\AuthenticationWebApi.csproj", "{4F99CA6F-9958-4ED1-86D1-57C7B6DD9898}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthenticationManager", "JwtAuthenticationManager\JwtAuthenticationManager.csproj", "{A5CC8A9E-D7E6-46AF-AB30-A5128F41E99E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationWebApi", "AuthenticationWebApi\AuthenticationWebApi.csproj", "{4F99CA6F-9958-4ED1-86D1-57C7B6DD9898}"
+>>>>>>> 68bc333f127a027f9a4cf4a25ef82e7b064597f2
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
