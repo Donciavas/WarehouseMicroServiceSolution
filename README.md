@@ -4,7 +4,7 @@
 
 This solution is a collection of three microservices with different database (SQL Server, MySQL & MongoDB). It is developed with API Gateway, using Ocelot, which communicates with all the three microservices for doing the CRUD operations. Finally, a Web Application is added which only communicates with the API Gateway. Postman is used to test communication between the API Gateway. All authorization is implemented through API Gateway. Only /api/Order is with RateLimitOptions of requests, as limit of 3 per 60s. Run the application through Docker compose. Authentication and Authorization is done with Json Web Tokens.
 
-Docker hub: https://hub.docker.com/repository/docker/donciavas/apigateway/general
+Docker hub: https://hub.docker.com/repositories/donciavas
 
 NuGet packages were used:
 
