@@ -25,7 +25,7 @@ NuGet packages were used:
 
 ---Important Notice--- What needs to be done in this program:
 
-1. Finish creating Register and Login services (have only log in service without database). 
+1. Finish creating Register and Login services (have only log in service without users database). 
 2. Use Mail Service for a better puspose, such as comfirming my email address. 
 3. Change Session Storage JWT encoding, as it is not safe. 
 4. Create Unit tests. 
