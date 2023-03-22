@@ -1,6 +1,6 @@
 ﻿using Blazored.SessionStorage;
 using BlazorServerWebUI.Extensions;
-using JwtAuthenticationManager.Models;
+using DataAccess.AuthModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 

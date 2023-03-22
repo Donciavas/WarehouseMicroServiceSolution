@@ -1,4 +1,4 @@
-﻿@page "/login"
+﻿@page "/register"
 @using BlazorServerWebUI.Authentication
 @using BlazorServerWebUI.Shared
 @using System.Net
@@ -12,39 +12,40 @@
 <div class="row">
     <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
         <div class="mb-3 text-center">
-            <h3>LOGIN</h3>
+            <h3>REGISTER</h3>
         </div>
         <div class="mb-3">
             <label>User Name</label>
-            <input @bind="loginRequest.UserName" class="form-control" placeholder="User Name" />
+            <input @bind="registerRequest.UserName" class="form-control" placeholder="User Name" />
         </div>
         <div class="mb-3">
             <label>Password</label>
-            <input @bind="loginRequest.Password" type="password" class="form-control" placeholder="Password" />
+            <input @bind="registerRequest.Password" type="password" class="form-control" placeholder="Password" />
         </div>
         <div class="mb-3 d-grid gap-2">
-            <button @onclick="Authenticate" class="btn btn-primary">Login</button>
+            <button @onclick="Authenticate" class="btn btn-primary">Register</button>
         </div>
     </div>
 </div>
 
 @code {
-    private CredentialRequestDto loginRequest = new CredentialRequestDto();
+    private CredentialRequestDto registerRequest = new CredentialRequestDto();
 
     private async Task Authenticate()
     {
-        var loginResponse = await httpClient.PostAsJsonAsync<CredentialRequestDto>("/api/Account/Login", loginRequest);
+        var registerResponse = await httpClient.PostAsJsonAsync<CredentialRequestDto>("/api/Account/Register", registerRequest);
 
-        if (loginResponse.IsSuccessStatusCode)
+        if (registerResponse.IsSuccessStatusCode)
         {
+            var loginResponse = await httpClient.PostAsJsonAsync<CredentialRequestDto>("/api/Account/Login", registerRequest);
             var userSession = await loginResponse.Content.ReadFromJsonAsync<UserSession>();
             var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
             await customAuthStateProvider.UpdateAuthenticationState(userSession);
             navManager.NavigateTo("/", true);
         }
-        else if (loginResponse.StatusCode == HttpStatusCode.Unauthorized)
+        else if (registerResponse.StatusCode == HttpStatusCode.BadRequest)
         {
-            await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
+            await js.InvokeVoidAsync("alert", "Choose different User Name or input lenght is not enough");
             return;
         }
     }

@@ -93,3 +93,13 @@ services:
     networks:
       - backend
 
+  userdb:
+    container_name: user-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - 18007:1433

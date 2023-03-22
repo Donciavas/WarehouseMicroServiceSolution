@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace DataAccess
+namespace DataAccess.MicroServiceDbContexts
 {
     public class ProductDbContext : DbContext
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace PersonRegistrationASPNet.BusinessLogic.Attributes
+namespace BusinessLogic.Attributes
 {
     public class CheckForWhiteSpacesAttribute : ValidationAttribute
     {
@@ -21,7 +21,6 @@ namespace PersonRegistrationASPNet.BusinessLogic.Attributes
         private static string GetErrorMessage()
         {
             return $"Input can't have white space";
-
         }
     }
 }

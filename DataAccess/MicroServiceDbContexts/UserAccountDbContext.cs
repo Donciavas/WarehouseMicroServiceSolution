@@ -1,14 +1,14 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.AuthModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DataAccess.MicroServiceDbContexts
 {
-    public class CustomerDbContext : DbContext
+    public class UserAccountDbContext : DbContext
     {
-        public DbSet<Customer>? Customers { get; set; }
-        public CustomerDbContext(DbContextOptions<CustomerDbContext> dbContextOptions) : base(dbContextOptions)
+        public DbSet<UserAccount>? UserAccounts { get; set; }
+        public UserAccountDbContext(DbContextOptions<UserAccountDbContext> dbContextOptions) : base(dbContextOptions)
         {
             try
             {

@@ -1,4 +1,4 @@
-using JwtAuthenticationManager;
+using BusinessLogic.Extensions;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 

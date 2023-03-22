@@ -1,5 +1,4 @@
-﻿using BusinessLogic.DTOs;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -21,7 +20,6 @@ namespace BusinessLogic.Services
             email.To.Add(MailboxAddress.Parse(request));
             email.Subject = $"Greetings {request}";
             email.Body = new TextPart(TextFormat.Text) { Text = "Welcome to our community. " };
-
             using var smtp = new SmtpClient();
             try
             {

@@ -1,4 +1,4 @@
-﻿namespace JwtAuthenticationManager.Models
+﻿namespace DataAccess.AuthModels
 {
     public class UserSession
     {

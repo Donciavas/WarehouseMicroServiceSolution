@@ -1,6 +1,6 @@
 ﻿using DataAccess.Models;
 using System.ComponentModel.DataAnnotations;
-using PersonRegistrationASPNet.BusinessLogic.Attributes;
+using BusinessLogic.Attributes;
 
 namespace BusinessLogic.DTOs
 {
@@ -8,7 +8,7 @@ namespace BusinessLogic.DTOs
     {
         public int CustomerId { get; set; }
         [Required]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for Customer Name! ")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Character length between 3 and 20 for customer name! ")]
         [CheckForWhiteSpaces]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Customer name. Use letters only please")]
         public string? CustomerName { get; set; }
@@ -17,7 +17,6 @@ namespace BusinessLogic.DTOs
         public string? MobileNumber { get; set; }
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.(com|net|org|gov|email)$", ErrorMessage = "Invalid email address pattern.")]
         public string? Email { get; set; }
-
         public static implicit operator Customer(CustomerPutDto customerPutDto)
         {
             return new Customer

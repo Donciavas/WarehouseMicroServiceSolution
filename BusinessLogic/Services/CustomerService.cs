@@ -1,6 +1,4 @@
-﻿using BusinessLogic.DTOs;
-using DataAccess;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services

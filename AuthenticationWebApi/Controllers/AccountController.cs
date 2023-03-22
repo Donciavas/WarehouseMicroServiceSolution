@@ -1,5 +1,6 @@
-﻿using JwtAuthenticationManager;
-using JwtAuthenticationManager.Models;
+﻿using BusinessLogic.DTOs;
+using BusinessLogic.Services;
+using DataAccess.AuthModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +10,23 @@ namespace AuthenticationWebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly JwtTokenHandler _jwtTokenHandler;
-        private UserAccountService _userAccountService;
-
-        public AccountController(JwtTokenHandler jwtTokenHandler, UserAccountService userAccountService)
+        private readonly UserAccountService _userAccountService;
+        public AccountController(UserAccountService userAccountService)
         {
-            _jwtTokenHandler = jwtTokenHandler;
             _userAccountService = userAccountService;
         }
-
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Register")]
         [AllowAnonymous]
-        public ActionResult<UserSession> Login([FromBody] LoginRequest loginRequest)
+        public ActionResult<bool> Signup([FromBody] CredentialRequestDto registerRequest)
+        {
+            var response = _userAccountService.Signup(registerRequest.UserName!, registerRequest.Password!);
+            if (response is false)
+                return BadRequest();
+            return Ok();
+        }
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public ActionResult<UserSession> Login([FromBody] CredentialRequestDto loginRequest)
         {
             var jwtAuthenticationManager = new JwtTokenHandler(_userAccountService);
             var userSession = jwtAuthenticationManager.GenerateJwtToken(loginRequest.UserName!, loginRequest.Password!);
@@ -29,14 +34,6 @@ namespace AuthenticationWebApi.Controllers
                 return Unauthorized();
             else
                 return userSession;
-        }
-
-        [HttpPost]
-        public ActionResult<AuthenticationResponse?> AuthenticateForTesting([FromBody] AuthenticationRequest authenticationRequest)
-        {
-            var authenticationResponse = _jwtTokenHandler.GenerateJwtTokenTest(authenticationRequest);
-            if (authenticationResponse == null) return Unauthorized();
-            return authenticationResponse;
         }
     }
 }

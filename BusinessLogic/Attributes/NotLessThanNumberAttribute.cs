@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PersonRegistrationASPNet.BusinessLogic.Attributes
+namespace BusinessLogic.Attributes
 {
     public class NotLessThanNumberAttribute : ValidationAttribute
     {
@@ -23,7 +23,5 @@ namespace PersonRegistrationASPNet.BusinessLogic.Attributes
         {
             return $"Input can't be less than {_inputLessThan}";
         }
-
     }
-
 }

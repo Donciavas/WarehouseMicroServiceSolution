@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
-using DataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OrderWebApi.Controllers
