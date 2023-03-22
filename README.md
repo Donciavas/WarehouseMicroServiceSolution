@@ -2,7 +2,7 @@
 
 .NET 6, ASP.NET Core
 
-This solution is a collection of three microservices with different database (SQL Server, MySQL & MongoDB). It is developed with API Gateway, using Ocelot, which communicates with all the three microservices for doing the CRUD operations. Finally, a Web Application is added which only communicates with the API Gateway. Postman is used to test communication between the API Gateway. All authorization is implemented through API Gateway. Only /api/Order is with RateLimitOptions of requests, as limit of 3 per 60s. Run the application through Docker compose. Authentication and Authorization is done with Json Web Tokens.
+This solution is a collection of three microservices with different database (SQL Server, MySQL & MongoDB). It is developed with API Gateway, using Ocelot, which communicates with all the three microservices for doing the CRUD operations. Finally, a Web Application is added which only communicates with the API Gateway. Postman is used to test communication between the API Gateway. All authorization is implemented through API Gateway. Only /api/Order is with RateLimitOptions of requests, as limit of 6 per 60s. Run the application through Docker compose. Authentication and Authorization is done with Json Web Tokens with Sign up, Login services and database. 
 
 Docker hub: https://hub.docker.com/repositories/donciavas
 
@@ -24,8 +24,7 @@ NuGet packages were used:
 14. Blazored.SessionStorage
 
 ---Important Notice--- What needs to be done in this program:
-
-1. Finish creating Register and Login services (have only log in service without users database). 
-2. Use Mail Service for a better puspose, such as comfirming my email address. 
-3. Change Session Storage JWT encoding, as it is not safe. 
-4. Create Unit tests. 
+ 
+1. Use Mail Service for a better puspose, such as comfirming my email address. 
+2. Change Session Storage JWT encoding, as it is not safe. 
+3. Create Unit tests. 
