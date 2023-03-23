@@ -18,7 +18,6 @@ namespace DataAccess.Repositories
             try
             {
                 var user = _userAccountDbContext.UserAccounts!.SingleOrDefault(x => x.UserName == username);
-                _logger.LogInformation("Returned user by its unique username.");
                 return user!;
             }
             catch (Exception ex)
@@ -33,7 +32,6 @@ namespace DataAccess.Repositories
             {
                 await _userAccountDbContext.UserAccounts!.AddAsync(user);
                 await _userAccountDbContext.SaveChangesAsync();
-                _logger.LogInformation("User data stored in database.");
                 return true;
             }
             catch (Exception ex)

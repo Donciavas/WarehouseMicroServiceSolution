@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace OrderWebApi.Controllers
 {
@@ -17,7 +18,7 @@ namespace OrderWebApi.Controllers
         public async Task<IActionResult> GetOrders()
         {
             var orders = await _orderService.GetAll();
-            if (orders is null)
+            if (orders.IsNullOrEmpty())
                 return NotFound("No orders found.");
             return Ok(orders);
         }

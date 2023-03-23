@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProductWebApi.Controllers
 {
@@ -17,7 +18,7 @@ namespace ProductWebApi.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productService.GetAll();
-            if (products is null)
+            if (products.IsNullOrEmpty())
                 return NotFound("No products found.");
             return Ok(products);
         }
@@ -33,7 +34,7 @@ namespace ProductWebApi.Controllers
         public async Task<IActionResult> GetAllByPriceProducts()
         {
             var products = await _productService.GetOrderedByPrice();
-            if (products is null)
+            if (products.IsNullOrEmpty())
                 return NotFound("No products found.");
             return Ok(products);
         }

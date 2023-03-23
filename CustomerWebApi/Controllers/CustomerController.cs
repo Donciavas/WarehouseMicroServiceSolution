@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CustomerWebApi.Controllers
 {
@@ -17,7 +18,7 @@ namespace CustomerWebApi.Controllers
         public async Task<IActionResult> GetCustomers()
         {
             var customers = await _customerService.GetAll();
-            if (customers is null)
+            if (customers.IsNullOrEmpty())
                 return NotFound("No customers found.");
             return Ok(customers);
         }
@@ -33,7 +34,7 @@ namespace CustomerWebApi.Controllers
         public async Task<IActionResult> GetAllByNameCustomers()
         {
             var customers = await _customerService.GetOrderedByName();
-            if (customers is null)
+            if (customers.IsNullOrEmpty())
                 return NotFound("No customers found.");
             return Ok(customers);
         }

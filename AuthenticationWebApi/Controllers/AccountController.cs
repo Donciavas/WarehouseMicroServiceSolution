@@ -22,7 +22,7 @@ namespace AuthenticationWebApi.Controllers
             var response = _userAccountService.Signup(registerRequest.UserName!, registerRequest.Password!);
             if (response is false)
                 return BadRequest("Choose different user name.");
-            return Ok();
+            return Ok("Account successfully created.");
         }
         [HttpPost("Login")]
         [AllowAnonymous]
@@ -31,7 +31,7 @@ namespace AuthenticationWebApi.Controllers
             var jwtAuthenticationManager = new JwtTokenHandler(_userAccountService);
             var userSession = jwtAuthenticationManager.GenerateJwtToken(loginRequest.UserName!, loginRequest.Password!);
             if (userSession is null)
-                return Unauthorized();
+                return Unauthorized("Invalid username or password!");
             else
                 return userSession;
         }

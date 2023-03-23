@@ -28,7 +28,6 @@ namespace DataAccess.Repositories
             try
             {
                 var orders = await _orderCollection.Find(Builders<Order>.Filter.Empty).ToListAsync();
-                _logger!.LogInformation("Returned all orders from database.");
                 return orders;
             }
             catch (Exception ex)
@@ -42,7 +41,6 @@ namespace DataAccess.Repositories
             try
             {
                 var filterDefinition = Builders<Order>.Filter.Eq(x => x.OrderId, orderId);
-                _logger!.LogInformation("Returned order by its unique ID.");
                 return await _orderCollection.Find(filterDefinition).SingleOrDefaultAsync();
             }
             catch (Exception ex)
@@ -56,7 +54,6 @@ namespace DataAccess.Repositories
             try
             {
                 await _orderCollection.InsertOneAsync(order);
-                _logger.LogInformation("Order is added in database.");
             }
             catch (Exception ex)
             {
@@ -73,7 +70,6 @@ namespace DataAccess.Repositories
                 if (filterDefinition is not null)
                 {
                     await _orderCollection.ReplaceOneAsync(filterDefinition, order);
-                    _logger.LogInformation("Order is updated and stored in database.");
                     return true;
                 }
                 return false;
@@ -92,7 +88,6 @@ namespace DataAccess.Repositories
                 if (filterDefinition is not null)
                 {
                     await _orderCollection.DeleteOneAsync(filterDefinition);
-                    _logger.LogInformation("Order is removed from database.");
                     return true;
                 }
                 return false;
