@@ -20,21 +20,46 @@ namespace DataAccess.Repositories
             _entities = _context.Set<TEntity>();
         }
         public async Task<IEnumerable<TEntity>> GetAll()
-        => await _entities.ToListAsync();
+        {
+            try
+            {
+                var tEntities = await _entities.ToListAsync();
+                _logger!.LogInformation("Returned all entities from database.");
+                return tEntities;
+            }
+            catch (Exception ex)
+            {
+                _logger!.LogError(ex.Message, ex);
+                return default!;
+            }
+        }
         public async Task<TEntity> Get(int id)
-        => await _entities.FindAsync(id);
+        {
+            try
+            {
+                var tEntity = await _entities.FindAsync(id);
+                _logger!.LogInformation("Returned entity by its unique ID.");
+                return tEntity!;
+            }
+            catch (Exception ex)
+            {
+                _logger!.LogError(ex.Message, ex);
+                return default!;
+            }
+        }
         public async Task<TEntity> Add(TEntity tEntity)
         {
             try
             {
                 await _entities.AddAsync(tEntity);
                 await _context.SaveChangesAsync();
+                _logger!.LogInformation("Entity is added to database.");
                 return tEntity;
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return null!;
+                return default!;
             }
         }
         public async Task<bool> Update(TEntity tEntity)
@@ -43,6 +68,7 @@ namespace DataAccess.Repositories
             {
                 _entities.Update(tEntity);
                 await _context.SaveChangesAsync();
+                _logger!.LogInformation("Entity is updated and stored in database.");
                 return true;
             }
             catch (Exception ex)
@@ -60,6 +86,7 @@ namespace DataAccess.Repositories
                 {
                     _entities.Remove(entity);
                     await _context.SaveChangesAsync();
+                    _logger!.LogInformation("Entity is removed from database.");
                     return true;
                 }
                 return false;

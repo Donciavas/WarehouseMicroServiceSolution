@@ -15,10 +15,17 @@ namespace DataAccess.Repositories
         }
         public UserAccount GetUser(string username)
         {
-            var user = _userAccountDbContext.UserAccounts!.SingleOrDefault(x => x.UserName == username);
-            if (user is null)
+            try
+            {
+                var user = _userAccountDbContext.UserAccounts!.SingleOrDefault(x => x.UserName == username);
+                _logger.LogInformation("Returned user by its unique username.");
+                return user!;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
                 return default!;
-            return user;
+            }
         }
         public async Task<bool> SaveUser(UserAccount user)
         {
@@ -26,6 +33,7 @@ namespace DataAccess.Repositories
             {
                 await _userAccountDbContext.UserAccounts!.AddAsync(user);
                 await _userAccountDbContext.SaveChangesAsync();
+                _logger.LogInformation("User data stored in database.");
                 return true;
             }
             catch (Exception ex)

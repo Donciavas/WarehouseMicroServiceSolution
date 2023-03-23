@@ -21,7 +21,7 @@ namespace AuthenticationWebApi.Controllers
         {
             var response = _userAccountService.Signup(registerRequest.UserName!, registerRequest.Password!);
             if (response is false)
-                return BadRequest();
+                return BadRequest("Choose different user name.");
             return Ok();
         }
         [HttpPost("Login")]
