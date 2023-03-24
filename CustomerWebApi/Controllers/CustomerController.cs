@@ -18,8 +18,6 @@ namespace CustomerWebApi.Controllers
         public async Task<IActionResult> GetCustomers()
         {
             var customers = await _customerService.GetAll();
-            if (customers.IsNullOrEmpty())
-                return NotFound("No customers found.");
             return Ok(customers);
         }
         [HttpGet("{customerId:int}")]

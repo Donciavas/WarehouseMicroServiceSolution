@@ -6,12 +6,12 @@ using System.Text;
 
 namespace BusinessLogic.Services
 {
-    public class JwtTokenHandler
+    public class JwtTokenHandler : IJwtTokenHandler
     {
         public const string JWT_SECURITY_KEY = "pRdCqn8cSWLtaJwbRg8jGzpQRyEA1gdXkt7GoPd4";
         private const int JWT_TOKEN_VALIDITY_MINS = 20;
-        private UserAccountService _userAccountService;
-        public JwtTokenHandler(UserAccountService userAccountService)
+        private IUserAccountService _userAccountService;
+        public JwtTokenHandler(IUserAccountService userAccountService)
         {
             _userAccountService = userAccountService;
         }

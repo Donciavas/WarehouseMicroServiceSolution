@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<UserAccountDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<JwtTokenHandler>();
-builder.Services.AddScoped<UserAccountService>();
+builder.Services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddTransient<IUserAccountRepository, UserAccountRepository>();
 
 var app = builder.Build();

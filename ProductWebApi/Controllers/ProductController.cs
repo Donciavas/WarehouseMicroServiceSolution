@@ -18,8 +18,6 @@ namespace ProductWebApi.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await _productService.GetAll();
-            if (products.IsNullOrEmpty())
-                return NotFound("No products found.");
             return Ok(products);
         }
         [HttpGet("{ProductId:int}")]

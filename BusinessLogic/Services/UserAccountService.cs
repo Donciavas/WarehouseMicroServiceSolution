@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace BusinessLogic.Services
 {
-    public class UserAccountService
+    public class UserAccountService : IUserAccountService
     {
         private readonly IUserAccountRepository _userAccountRepository;
         public UserAccountService(IUserAccountRepository userAccountRepository)
@@ -20,7 +20,7 @@ namespace BusinessLogic.Services
             _userAccountRepository.SaveUser(user);
             return true;
         }
-        private UserAccount CreateUser(string username, string password)
+        private static UserAccount CreateUser(string username, string password)
         {
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new UserAccount
@@ -33,14 +33,14 @@ namespace BusinessLogic.Services
             };
             return user;
         }
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512();
             passwordSalt = hmac.Key;
             passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
         }
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
 
             using var hmac = new HMACSHA512(passwordSalt);

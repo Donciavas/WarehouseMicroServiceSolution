@@ -10,10 +10,12 @@ namespace AuthenticationWebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserAccountService _userAccountService;
-        public AccountController(UserAccountService userAccountService)
+        private readonly IUserAccountService _userAccountService;
+        private readonly IJwtTokenHandler _jwtTokenHandler;
+        public AccountController(IUserAccountService userAccountService, IJwtTokenHandler jwtTokenHandler)
         {
             _userAccountService = userAccountService;
+            _jwtTokenHandler = jwtTokenHandler;
         }
         [HttpPost("Register")]
         [AllowAnonymous]
@@ -28,8 +30,7 @@ namespace AuthenticationWebApi.Controllers
         [AllowAnonymous]
         public ActionResult<UserSession> Login([FromBody] CredentialRequestDto loginRequest)
         {
-            var jwtAuthenticationManager = new JwtTokenHandler(_userAccountService);
-            var userSession = jwtAuthenticationManager.GenerateJwtToken(loginRequest.UserName!, loginRequest.Password!);
+            var userSession = _jwtTokenHandler.GenerateJwtToken(loginRequest.UserName!, loginRequest.Password!);
             if (userSession is null)
                 return Unauthorized("Invalid username or password!");
             else
