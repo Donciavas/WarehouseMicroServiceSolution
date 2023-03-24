@@ -1,16 +1,13 @@
 using BusinessLogic.Services;
-using DataAccess.MicroServiceDbContexts;
-using DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
+using DataAccess.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ProductDbContext>(o => o.UseMySQL(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddProductDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 

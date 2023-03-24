@@ -1,17 +1,13 @@
-using BusinessLogic.Services;
-using DataAccess.MicroServiceDbContexts;
-using DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
+using BusinessLogic.Extensions;
+using DataAccess.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddCustomerBusinessLogic();
+builder.Services.AddCustomerDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 

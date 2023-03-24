@@ -1,17 +1,13 @@
-using BusinessLogic.Services;
-using DataAccess.MicroServiceDbContexts;
-using DataAccess.Repositories;
-using Microsoft.EntityFrameworkCore;
+using BusinessLogic.Extensions;
+using DataAccess.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<UserAccountDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
-builder.Services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
-builder.Services.AddScoped<IUserAccountService, UserAccountService>();
-builder.Services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+builder.Services.AddUserAccountBusinessLogic();
+builder.Services.AddUserAccountDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 
