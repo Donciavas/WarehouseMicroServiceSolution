@@ -31,24 +31,24 @@ namespace OrderWebApi.Controllers
         public async Task<IActionResult> CreateOrder(OrderDto orderDto)
         {
             if (orderDto is null) return BadRequest("Cannot create order without any data.");
-            var result = await _orderService.Add(orderDto);
-            if (result is null) return UnprocessableEntity("Internal server error.Something went wrong while trying to add order to database.");
-            return StatusCode(201, result);
+            var response = await _orderService.Add(orderDto);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+            return StatusCode(201, response);
         }
         [HttpPut]
         public async Task<IActionResult> UpdateOrder(OrderPutDto orderPutDto)
         {
             if (orderPutDto is null) return BadRequest("Order ID cannot be empty data.");
-            var result = await _orderService.Update(orderPutDto);
-            if (!result) return NotFound("No order found by this ID.");
-            return Ok(result);
+            var response = await _orderService.Update(orderPutDto);
+            if (!response.IsSuccess) return NotFound(response.Message);
+            return Ok(response);
         }
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> DeleteOrder(string orderId)
         {
             if (orderId is null) return BadRequest("Order ID cannot be empty data.");
-            var result = await _orderService.Remove(orderId);
-            if (!result) return NotFound($"No order found by No. {orderId} ID.");
+            var response = await _orderService.Remove(orderId);
+            if (!response.IsSuccess) return NotFound(response.Message);
             return RedirectToAction(nameof(GetOrders));
         }
     }

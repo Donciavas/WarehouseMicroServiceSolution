@@ -2,6 +2,7 @@
 using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Ubiety.Dns.Core;
 
 namespace ProductWebApi.Controllers
 {
@@ -40,24 +41,24 @@ namespace ProductWebApi.Controllers
         public async Task<IActionResult> CreateProduct(ProductDto productDto)
         {
             if (productDto is null) return BadRequest("Cannot create product without any data.");
-            var result = await _productService.Add(productDto);
-            if (result is null) return UnprocessableEntity("Internal server error.Something went wrong while trying to add product to database.");
-            return StatusCode(201, result);
+            var response = await _productService.Add(productDto);
+            if (!response.IsSuccess) return UnprocessableEntity(response.Message);
+            return StatusCode(201, response);
         }
         [HttpPut]
         public async Task<IActionResult> UpdateProduct(ProductPutDto productPutDto)
         {
             if (productPutDto is null || productPutDto.ProductId is 0) return BadRequest("Customer ID starts with No. 1 and cannot be empty data.");
-            var result = await _productService.Update(productPutDto);
-            if (!result) return NotFound("No product found by this ID.");
-            return Ok(result);
+            var response = await _productService.Update(productPutDto);
+            if (!response.IsSuccess) return NotFound(response.Message);
+            return Ok(response);
         }
         [HttpDelete("{productId:int}")]
         public async Task<IActionResult> DeleteProduct(int productId)
         {
             if (productId is 0 || productId <= 0) return BadRequest("Product ID starts with No. 1 and cannot be empty data.");
-            var result = await _productService.Remove(productId);
-            if (!result) return NotFound($"No product found by No. {productId} ID.");
+            var response = await _productService.Remove(productId);
+            if (!response.IsSuccess) return NotFound(response.Message);
             return RedirectToAction(nameof(GetProducts));
         }
     }

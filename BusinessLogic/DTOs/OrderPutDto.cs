@@ -19,7 +19,7 @@ namespace BusinessLogic.DTOs
             {
                 OrderId = orderPutDto.OrderId,
                 CustomerId = orderPutDto.CustomerId,
-                OrderedOn = DateTime.UtcNow,
+                OrderedOn = DateTime.Now,
                 OrderDetails = orderPutDto.OrderDetails
             };
         }

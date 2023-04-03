@@ -1,7 +1,9 @@
-﻿namespace BusinessLogic.Services
+﻿using DataAccess.DTOs;
+
+namespace BusinessLogic.Services
 {
     public interface IEmailService
     {
-        bool GreetingEmail(string request);
+        ResponseDto GreetingEmail(string request);
     }
 }

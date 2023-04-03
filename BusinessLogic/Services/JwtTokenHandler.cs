@@ -15,12 +15,12 @@ namespace BusinessLogic.Services
         {
             _userAccountService = userAccountService;
         }
-        public UserSession? GenerateJwtToken(string userName, string password)
+        public async Task<UserSession>? GenerateJwtToken(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
-                return null;
-            var userAccount = _userAccountService.Login(userName, password);
-            if (userAccount == null) return null;
+            if (string.IsNullOrWhiteSpace(userName))
+                return null!;
+            var userAccount = await _userAccountService.GetUserAccount(userName)!;
+            if (userAccount == null) return null!;
             var tokenExpiryTimeStamp = DateTime.Now.AddMinutes(JWT_TOKEN_VALIDITY_MINS);
             var tokenKey = Encoding.ASCII.GetBytes(JWT_SECURITY_KEY);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>

@@ -1,4 +1,5 @@
-﻿using DataAccess.MicroServiceDbContexts;
+﻿using DataAccess.DTOs;
+using DataAccess.MicroServiceDbContexts;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,17 +28,24 @@ namespace DataAccess.Repositories
                 return default!;
             }
         }
-        public bool EmailCheck(string checkEmail)
+        public ResponseDto EmailCheck(string checkEmail)
         {
             try
             {
                 var emailCheck = _customerDbContext.Customers!.Any(u => u.Email == checkEmail);
-                return emailCheck!;
+                if (emailCheck)
+                {
+                    return new ResponseDto(true, "Try using different email address");
+                }
+                else
+                {
+                    return new ResponseDto(false, "Email address successfully accepted");
+                }
             }
             catch (Exception ex)
             {
                 _logger!.LogError(ex.Message, ex);
-                return default!;
+                return new ResponseDto(false, "Failed to check email address in the database");
             }
         }
     }

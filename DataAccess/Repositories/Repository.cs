@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.DTOs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Repositories
@@ -45,35 +46,35 @@ namespace DataAccess.Repositories
                 return default!;
             }
         }
-        public async Task<TEntity> Add(TEntity tEntity)
+        public async Task<ResponseDto> Add(TEntity tEntity)
         {
             try
             {
                 await _entities.AddAsync(tEntity);
                 await _context.SaveChangesAsync();
-                return tEntity;
+                return new ResponseDto(true, "Entity was added");
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return default!;
+                return new ResponseDto(false, "Failed to add entity in the database");
             }
         }
-        public async Task<bool> Update(TEntity tEntity)
+        public async Task<ResponseDto> Update(TEntity tEntity)
         {
             try
             {
                 _entities.Update(tEntity);
                 await _context.SaveChangesAsync();
-                return true;
+                return new ResponseDto(true, "Entity was updated");
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to update entity in the database");
             }
         }
-        public async Task<bool> Remove(int id)
+        public async Task<ResponseDto> Remove(int id)
         {
             try
             {
@@ -82,14 +83,14 @@ namespace DataAccess.Repositories
                 {
                     _entities.Remove(entity);
                     await _context.SaveChangesAsync();
-                    return true;
+                    return new ResponseDto(true, "Entity was deleted");
                 }
-                return false;
+                return new ResponseDto(false, "Bad entity Id");
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to remove entity from the database");
             }
         }
     }

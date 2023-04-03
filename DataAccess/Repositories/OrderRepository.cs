@@ -1,4 +1,5 @@
 ﻿using DataAccess.Configuration;
+using DataAccess.DTOs;
 using DataAccess.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -49,7 +50,7 @@ namespace DataAccess.Repositories
                 return default!;
             }
         }
-        public async Task<Order> Add(Order order)
+        public async Task<ResponseDto> Add(Order order)
         {
             try
             {
@@ -58,11 +59,11 @@ namespace DataAccess.Repositories
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return default!;
+                return new ResponseDto(false, "Failed to add order in the database");
             }
-            return order;
+            return new ResponseDto(true, "Order was added");
         }
-        public async Task<bool> Update(Order order)
+        public async Task<ResponseDto> Update(Order order)
         {
             try
             {
@@ -70,17 +71,17 @@ namespace DataAccess.Repositories
                 if (filterDefinition is not null)
                 {
                     await _orderCollection.ReplaceOneAsync(filterDefinition, order);
-                    return true;
+                    return new ResponseDto(true, "Order was updated");
                 }
-                return false;
+                return new ResponseDto(false, "Bad order ID");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to update order in the database");
             }
         }
-        public async Task<bool> Remove(string orderId)
+        public async Task<ResponseDto> Remove(string orderId)
         {
             try
             {
@@ -88,14 +89,14 @@ namespace DataAccess.Repositories
                 if (filterDefinition is not null)
                 {
                     await _orderCollection.DeleteOneAsync(filterDefinition);
-                    return true;
+                    return new ResponseDto(true, "Order was deleted");
                 }
-                return false;
+                return new ResponseDto(false, "Bad order ID");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to remove order from the database");
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using DataAccess.DTOs;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -13,7 +14,7 @@ namespace BusinessLogic.Services
         {
             _logger = logger;
         }
-        public bool GreetingEmail(string request)
+        public ResponseDto GreetingEmail(string request)
         {
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse("diego.durgan@ethereal.email"));
@@ -26,12 +27,12 @@ namespace BusinessLogic.Services
                 smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
                 smtp.Authenticate("diego.durgan@ethereal.email", "KzGkYrFzhp4zn94pfd");
                 smtp.Send(email);
-                return true;
+                return new ResponseDto(true, "Greeting email was sent successfully");
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to send greeting email");
             }
             finally
             {

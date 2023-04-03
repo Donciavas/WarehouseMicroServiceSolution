@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.DTOs;
+using DataAccess.Models;
 using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
@@ -14,9 +15,9 @@ namespace BusinessLogic.Services
         }
         public async Task<IEnumerable<Customer>> GetOrderedByName() =>
             await _customerRepository.GetOrderedByName();
-        public bool GreetingEmail(string verifyEmail) =>
+        public ResponseDto GreetingEmail(string verifyEmail) =>
              _emailService.GreetingEmail(verifyEmail);
-        public bool EmailCheck(string checkEmail) =>
+        public ResponseDto EmailCheck(string checkEmail) =>
             _customerRepository.EmailCheck(checkEmail);
     }
 }

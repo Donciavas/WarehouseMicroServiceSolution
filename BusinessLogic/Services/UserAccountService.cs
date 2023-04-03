@@ -1,4 +1,5 @@
 ﻿using DataAccess.AuthModels;
+using DataAccess.DTOs;
 using DataAccess.Repositories;
 using System.Security.Cryptography;
 
@@ -11,14 +12,14 @@ namespace BusinessLogic.Services
         {
             _userAccountRepository = userAccountRepository;
         }
-        public bool Signup(string username, string password)
+        public async Task<ResponseDto> Signup(string username, string password)
         {
-            var user = _userAccountRepository.GetUser(username);
+            var user = await _userAccountRepository.GetUser(username);
             if (user is not null)
-                return false;
+                return new ResponseDto(false, "User already exists");
             user = CreateUser(username, password);
-            _userAccountRepository.SaveUser(user);
-            return true;
+            await _userAccountRepository.SaveUser(user);
+            return new ResponseDto(true, "User was created");
         }
         private static UserAccount CreateUser(string username, string password)
         {
@@ -48,14 +49,19 @@ namespace BusinessLogic.Services
 
             return computedHash.SequenceEqual(passwordHash);
         }
-        public UserAccount? Login(string userName, string password)
+        public async Task<ResponseDto>? Login(string userName, string password)
         {
-            var account = _userAccountRepository.GetUser(userName);
+            var account = await _userAccountRepository.GetUser(userName);
             if (account is null)
-                return default;
+                return new ResponseDto(false, "Invalid Username or Password");
             if (!VerifyPasswordHash(password, account.Password!, account.PasswordSalt!))
-                return default;
-            return account;
+                return new ResponseDto(false, "Username or Password does not match");
+            return new ResponseDto(true, "User credentials accepted");
+        }
+        public async Task<UserAccount> GetUserAccount(string username)
+        {
+            var user = await _userAccountRepository.GetUser(username);
+            return user;
         }
     }
 }

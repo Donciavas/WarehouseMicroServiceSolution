@@ -1,8 +1,10 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Services;
 using DataAccess.AuthModels;
+using DataAccess.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace AuthenticationWebApi.Controllers
 {
@@ -19,22 +21,25 @@ namespace AuthenticationWebApi.Controllers
         }
         [HttpPost("Register")]
         [AllowAnonymous]
-        public ActionResult<bool> Signup([FromBody] CredentialRequestDto registerRequest)
+        public async Task<ActionResult<ResponseDto>> Signup([FromBody] CredentialRequestDto registerRequest)
         {
-            var response = _userAccountService.Signup(registerRequest.UserName!, registerRequest.Password!);
-            if (response is false)
-                return BadRequest("Choose different user name.");
-            return Ok("Account successfully created.");
+            var response = await _userAccountService.Signup(registerRequest.UserName!, registerRequest.Password!);
+            if (!response.IsSuccess)
+                return BadRequest(response.Message);
+            return Ok(response);
         }
         [HttpPost("Login")]
         [AllowAnonymous]
-        public ActionResult<UserSession> Login([FromBody] CredentialRequestDto loginRequest)
+        public async  Task<ActionResult<(ResponseDto, UserSession)>> Login([FromBody] CredentialRequestDto loginRequest)
         {
-            var userSession = _jwtTokenHandler.GenerateJwtToken(loginRequest.UserName!, loginRequest.Password!);
+            var response = await _userAccountService.Login(loginRequest.UserName!, loginRequest.Password!)!;
+            if (!response.IsSuccess)
+                return Unauthorized(response);
+            var userSession = await _jwtTokenHandler.GenerateJwtToken(loginRequest.UserName!)!;
             if (userSession is null)
-                return Unauthorized("Invalid username or password!");
+                return BadRequest(new ResponseDto(false, "Internal Server Error. Cannot log in at the moment"));
             else
-                return userSession;
+                return Ok(userSession);
         }
     }
 }

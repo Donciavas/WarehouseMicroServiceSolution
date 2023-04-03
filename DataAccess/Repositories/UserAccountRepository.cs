@@ -1,5 +1,7 @@
 ﻿using DataAccess.AuthModels;
+using DataAccess.DTOs;
 using DataAccess.MicroServiceDbContexts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Repositories
@@ -13,11 +15,11 @@ namespace DataAccess.Repositories
             _userAccountDbContext = context;
             _logger = logger;
         }
-        public UserAccount GetUser(string username)
+        public async Task<UserAccount> GetUser(string username)
         {
             try
             {
-                var user = _userAccountDbContext.UserAccounts!.SingleOrDefault(x => x.UserName == username);
+                var user = await _userAccountDbContext.UserAccounts!.SingleOrDefaultAsync(x => x.UserName == username);
                 return user!;
             }
             catch (Exception ex)
@@ -26,18 +28,18 @@ namespace DataAccess.Repositories
                 return default!;
             }
         }
-        public async Task<bool> SaveUser(UserAccount user)
+        public async Task<ResponseDto> SaveUser(UserAccount user)
         {
             try
             {
                 await _userAccountDbContext.UserAccounts!.AddAsync(user);
                 await _userAccountDbContext.SaveChangesAsync();
-                return true;
+                return new ResponseDto(true, "User was saved in the database");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
-                return false;
+                return new ResponseDto(false, "Failed to save user in the database");
             }
         }
     }

@@ -1,10 +1,11 @@
 ﻿using DataAccess.AuthModels;
+using DataAccess.DTOs;
 
 namespace DataAccess.Repositories
 {
     public interface IUserAccountRepository
     {
-        UserAccount GetUser(string username);
-        Task<bool> SaveUser(UserAccount user);
+        Task<UserAccount> GetUser(string username);
+        Task<ResponseDto> SaveUser(UserAccount user);
     }
 }

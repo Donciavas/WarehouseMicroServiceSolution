@@ -18,7 +18,7 @@ namespace BusinessLogic.DTOs
             return new Order
             {
                 CustomerId = orderDto.CustomerId,
-                OrderedOn = DateTime.UtcNow,
+                OrderedOn = DateTime.Now,
                 OrderDetails = orderDto.OrderDetails
             };
         }

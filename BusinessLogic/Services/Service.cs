@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories;
+﻿using DataAccess.DTOs;
+using DataAccess.Repositories;
 
 namespace BusinessLogic.Services
 {
@@ -13,11 +14,11 @@ namespace BusinessLogic.Services
             await _repository.GetAll();
         public async Task<TEntity> Get(int id) =>
             await _repository.Get(id);
-        public async Task<TEntity> Add(TEntity tEntity) =>
+        public async Task<ResponseDto> Add(TEntity tEntity) =>
             await _repository.Add(tEntity);
-        public async Task<bool> Update(TEntity tEntity) =>
+        public async Task<ResponseDto> Update(TEntity tEntity) =>
             await _repository.Update(tEntity);
-        public async Task<bool> Remove(int id) =>
+        public async Task<ResponseDto> Remove(int id) =>
             await _repository.Remove(id);
     }
 }
